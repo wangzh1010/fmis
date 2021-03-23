@@ -1,0 +1,2 @@
+<!--pages/more/more.wxml-->
+<button bindtap="login">测试</button>

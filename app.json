@@ -1,0 +1,43 @@
+{
+    "entryPagePath": "pages/more/more",
+    "pages": [
+        "pages/index/index",
+        "pages/logs/logs",
+        "pages/my/my",
+        "pages/more/more"
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "FMIS",
+        "navigationBarTextStyle": "black"
+    },
+    "tabBar": {
+        "color": "#000000",
+        "selectedColor": "#007bff",
+        "backgroundColor": "#ffffff",
+        "borderStyle": "black",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "Index",
+                "iconPath": "assets/home.png",
+                "selectedIconPath": "assets/home.png"
+            },
+            {
+                "pagePath": "pages/more/more",
+                "text": "More",
+                "iconPath": "assets/more.png",
+                "selectedIconPath": "assets/more.png"
+            },
+            {
+                "pagePath": "pages/my/my",
+                "text": "My",
+                "iconPath": "assets/me.png",
+                "selectedIconPath": "assets/me.png"
+            }
+        ]
+    },
+    "style": "v2",
+    "sitemapLocation": "sitemap.json"
+}

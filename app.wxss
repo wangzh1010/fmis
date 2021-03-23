@@ -1,0 +1,22 @@
+/**app.wxss**/
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  background-color: #FFFFFF;
+}
+
+.text-warm {
+  color: #ffa726;
+}
+
+.text-success {
+  color: #4CAF50;
+}
+
+.text-danger {
+  color: #e60000;
+}
