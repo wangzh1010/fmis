@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view class="container">
+<!-- <view class="container">
   <view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>
@@ -9,5 +9,46 @@
   </view>
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>
+  </view>
+  明细
+</view> -->
+<!--pages/my/my.wxml-->
+<wxs src="../../wxs/utils.wxs" module="Utils"></wxs>
+<view class="container">
+  <view class="card">
+    <view class="date" bindtap="changeDate">
+      <picker mode="date" value="{{date}}" bindchange="handleDateChange"><text>{{date}}</text></picker>
+    </view>
+    <view class="wrap">
+      <view class="surplus">
+        余<text>0.0</text>元
+      </view>
+      <view class="incoming-and-outgoings">
+        <view>收<text>0.0</text>元</view>|
+        <view>支<text>0.0</text>元</view>
+      </view>
+    </view>
+  </view>
+  <view class="details">
+    <view class="summary">
+      <view class="date">03月24日</view>
+      <view class="wrap">
+        <text>收: 99.50</text>
+        <text>支: 100.34</text>
+        <text>余: -99.50</text>
+      </view>
+    </view>
+    <view class="row" wx:for="{{list}}" wx:key="index">
+      <view class="img-wrap">
+        <image src="{{Utils.transformImageURL(item)}}" mode="aspectFit" />
+      </view>
+      <view class="wrap">
+        <text>{{Utils.transformType(item)}}</text>
+        <text>{{Utils.formatMoney(item)}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="add" bindtap="addRecord">
+    <image src="../../assets/add.png" mode="aspectFit" />
   </view>
 </view>

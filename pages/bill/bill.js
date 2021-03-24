@@ -1,17 +1,11 @@
-// pages/more/more.js
-const date = new Date();
-const year = date.getFullYear();
-const month = date.getMonth() + 1;
-const day = date.getDate()
+// pages/bill/bill.js
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-        date: `${year}-${month}-${day}`,
-        start: year - 5,
-        end: year + 5
+
     },
 
     /**
@@ -68,15 +62,5 @@ Page({
      */
     onShareAppMessage: function () {
 
-    },
-
-    add() {
-
-    },
-
-    handleDateChange(e) {
-        this.setData({
-            date: e.detail.value
-        })
     }
 })

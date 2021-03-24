@@ -1,14 +1,16 @@
 <!--pages/my/my.wxml-->
 <view class="container">
   <view class="card">
-    <view class="date" bindtap="changeDate"><text>{{date}}</text></view>
+    <view class="date" bindtap="changeDate">
+      <picker mode="date" value="{{date}}" bindchange="handleDateChange"><text>{{date}}</text></picker>
+    </view>
     <view class="wrap">
       <view class="surplus">
-        <text>0.0</text>元
+        余<text>0.0</text>元
       </view>
       <view class="incoming-and-outgoings">
-        <view><text>0.0</text>元</view>|
-        <view><text>0.0</text>元</view>
+        <view>收<text>0.0</text>元</view>|
+        <view>支<text>0.0</text>元</view>
       </view>
     </view>
   </view>

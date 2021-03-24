@@ -1,0 +1,35 @@
+var config = require('./config.wxs');
+var mapping = ['income', 'outcome'];
+
+function transformType(item) {
+    var key = mapping[item.type];
+    var arr = config[key];
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i].key === item.key) {
+            return arr[i].value;
+        }
+    }
+    return '';
+}
+
+function transformImageURL(item) {
+    var key = mapping[item.type];
+    var arr = config[key];
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i].key === item.key) {
+            return '../../assets/' + arr[i].pinyin + '.png';
+        }
+    }
+    return '';
+}
+
+function formatMoney(item) {
+    var base = item.type === 0 ? 1 : -1;
+    return (base * item.value / 100).toFixed(2);
+}
+
+module.exports = {
+    formatMoney: formatMoney,
+    transformType: transformType,
+    transformImageURL: transformImageURL
+}

@@ -1,10 +1,11 @@
 {
-    "entryPagePath": "pages/more/more",
+    "entryPagePath": "pages/index/index",
     "pages": [
         "pages/index/index",
         "pages/logs/logs",
         "pages/my/my",
-        "pages/more/more"
+        "pages/more/more",
+        "pages/bill/bill"
     ],
     "window": {
         "backgroundTextStyle": "light",
@@ -14,27 +15,33 @@
     },
     "tabBar": {
         "color": "#000000",
-        "selectedColor": "#007bff",
+        "selectedColor": "#1296db",
         "backgroundColor": "#ffffff",
         "borderStyle": "black",
         "list": [
             {
                 "pagePath": "pages/index/index",
-                "text": "Index",
-                "iconPath": "assets/home.png",
-                "selectedIconPath": "assets/home.png"
+                "text": "Detail",
+                "iconPath": "assets/detail.png",
+                "selectedIconPath": "assets/detail_on.png"
             },
             {
                 "pagePath": "pages/more/more",
                 "text": "More",
                 "iconPath": "assets/more.png",
-                "selectedIconPath": "assets/more.png"
+                "selectedIconPath": "assets/more_on.png"
+            },
+            {
+                "pagePath": "pages/bill/bill",
+                "text": "Bill",
+                "iconPath": "assets/bill.png",
+                "selectedIconPath": "assets/bill_on.png"
             },
             {
                 "pagePath": "pages/my/my",
                 "text": "My",
                 "iconPath": "assets/me.png",
-                "selectedIconPath": "assets/me.png"
+                "selectedIconPath": "assets/me_on.png"
             }
         ]
     },

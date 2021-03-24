@@ -8,7 +8,8 @@
     color: #fff;
     border-radius: 10rpx;
     /* background-color: #bdbdbd; */
-    background: linear-gradient(90deg,#FF7254,#FF5366);
+    /* background: linear-gradient(90deg,#FF7254,#FF5366); */
+    background: linear-gradient(90deg,#64b5f6,#1296db);
   }
   .card > .date{
     display: flex;
@@ -19,10 +20,10 @@
     font-size: 14px;
   }
   .card > .date > text{
-    color: #000;
+    color: #fff;
     padding: 0rpx 36rpx;  
     border-radius: 20rpx;
-    background-color: #fff;
+    background-color: #0088cc;
   }
   .card > .wrap{
     display: flex;
@@ -52,7 +53,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #bdbdbd;
+    /* background-color: #bdbdbd; */
+    background-color: #1296db;
     border-radius: 100%;
     position: fixed;
     right: 10rpx;

@@ -1,21 +1,22 @@
 // pages/my/my.js
+let date = new Date();
+let year = date.getFullYear();
+let month = date.getMonth() + 1;
+month = month < 10 ? '0' + month : month;
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-        date: ''
+        date: `${year}-${month}`
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        let now = new Date();
-        this.setData({
-            date: now.getFullYear() + '年' + (now.getMonth() + 1) + '月'
-        })
+
     },
 
     /**
@@ -66,8 +67,11 @@ Page({
     onShareAppMessage: function () {
 
     },
-    changeDate() {
-
+    handleDateChange(e) {
+        let arr = e.detail.value.split('-');
+        this.setData({
+            date: `${arr[0]}-${arr[1]}`
+        });
     },
     addRecord() {
 

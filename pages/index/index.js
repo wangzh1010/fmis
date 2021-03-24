@@ -1,10 +1,24 @@
 // index.js
 // 获取应用实例
 const app = getApp()
-
+let date = new Date();
+let year = date.getFullYear();
+let month = date.getMonth() + 1;
+month = month < 10 ? '0' + month : month;
+const config = require('../../config/config.js')
 Page({
   data: {
-    motto: 'Hello World',
+    date: `${year}-${month}`,
+    list: [{
+      type: 0,
+      key: 1,
+      value: 9950
+    }, {
+      type: 1,
+      key: 1,
+      value: 10034
+    }],
+    motto: '',
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
@@ -50,5 +64,11 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
+  },
+  handleDateChange(e) {
+    let arr = e.detail.value.split('-');
+    this.setData({
+      date: `${arr[0]}-${arr[1]}`
+    });
   }
 })

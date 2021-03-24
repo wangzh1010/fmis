@@ -1,2 +1,8 @@
 <!--pages/more/more.wxml-->
-<button bindtap="login">测试</button>
+<button bindtap="add">新增</button>
+<view>
+    <picker mode="date" fields="day" start="{{start}}" end="{{end}}" value="{{date}}" bindchange="handleDateChange">
+        <view>{{date}}</view>
+    </picker>
+    统计图
+</view>
