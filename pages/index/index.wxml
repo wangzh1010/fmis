@@ -17,37 +17,39 @@
 <view class="container">
   <view class="card">
     <view class="date" bindtap="changeDate">
-      <picker mode="date" value="{{date}}" bindchange="handleDateChange"><text>{{date}}</text></picker>
+      <picker mode="date" value="{{date}}" fields="month" start="{{start}}" end="{{end}}" bindchange="handleDateChange"><text>{{date}}</text></picker>
     </view>
     <view class="wrap">
       <view class="surplus">
-        余<text>0.0</text>元
+        结余<text>0.0</text>元
       </view>
       <view class="incoming-and-outgoings">
-        <view>收<text>0.0</text>元</view>|
-        <view>支<text>0.0</text>元</view>
+        <view>收入<text>0.0</text>元</view>|
+        <view>支出<text>0.0</text>元</view>
       </view>
     </view>
   </view>
-  <view class="details">
-    <view class="summary">
-      <view class="date">03月24日</view>
-      <view class="wrap">
-        <text>收: 99.50</text>
-        <text>支: 100.34</text>
-        <text>余: -99.50</text>
+  <block wx:for="{{details}}" wx:key="index" wx:for-index="date" wx:for-item="arr">
+    <view class="details">
+      <view class="summary">
+        <view class="date">{{Utils.formatDate(date)}}</view>
+        <view class="wrap">
+          <view>收入：<text class="amount">{{Utils.calculate(arr, 0)}}</text></view>
+          <view>支出：<text class="amount">{{Utils.calculate(arr, 1)}}</text></view>
+          <view>结余：<text class="amount">{{Utils.calculate(arr)}}</text></view>
+        </view>
+      </view>
+      <view class="row" wx:for="{{arr}}" wx:for-item="item" wx:key="index">
+        <view class="img-wrap">
+          <image src="{{Utils.transformImageURL(item)}}" mode="aspectFit" />
+        </view>
+        <view class="wrap">
+          <text>{{Utils.transformType(item)}}</text>
+          <text>{{Utils.formatMoney(item)}}</text>
+        </view>
       </view>
     </view>
-    <view class="row" wx:for="{{list}}" wx:key="index">
-      <view class="img-wrap">
-        <image src="{{Utils.transformImageURL(item)}}" mode="aspectFit" />
-      </view>
-      <view class="wrap">
-        <text>{{Utils.transformType(item)}}</text>
-        <text>{{Utils.formatMoney(item)}}</text>
-      </view>
-    </view>
-  </view>
+  </block>
   <view class="add" bindtap="addRecord">
     <image src="../../assets/add.png" mode="aspectFit" />
   </view>

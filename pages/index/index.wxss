@@ -38,7 +38,7 @@
   justify-content: flex-end;
   align-items: center;
   padding: 0 30rpx;
-  font-size: 14px;
+  font-size: 28rpx;
 }
 
 .card>.date text {
@@ -80,7 +80,19 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20rpx;
+  padding: 20rpx 20rpx;
+  font-size: 24rpx;
+  margin-bottom: 16rpx;
+  border-bottom: 1rpx solid #eeeeee;
+}
+
+.details>.summary>.wrap {
+  display: flex;
+  flex-direction: row;
+}
+
+.details>.summary>.wrap>view {
+  margin-left: 20rpx;
 }
 
 .details>.row {
@@ -91,7 +103,7 @@
   align-items: center;
   height: 80rpx;
   padding: 10rpx 20rpx;
-  margin-bottom: 12rpx;
+  margin-bottom: 16rpx;
 }
 
 .details .img-wrap {
@@ -136,7 +148,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: #bdbdbd; */
   background-color: #1296db;
   border-radius: 100%;
   position: fixed;

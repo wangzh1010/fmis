@@ -28,7 +28,27 @@ function formatMoney(item) {
     return (base * item.value / 100).toFixed(2);
 }
 
+function formatDate(dateStr) {
+    var arr = dateStr.split('-');
+    return arr[1] + '月' + arr[2] + '日';
+}
+
+function calculate(arr, type) {
+    var totalAmount = arr.reduce(function (sum, item) {
+        if (typeof type !== 'undefined') {
+            var amount = item.type === type ? item.value : 0;
+            return sum += amount;
+        } else {
+            var base = item.type === 0 ? 1 : -1;
+            return sum += base * item.value;
+        }
+    }, 0);
+    return (totalAmount / 100).toFixed(2);
+}
+
 module.exports = {
+    calculate: calculate,
+    formatDate: formatDate,
     formatMoney: formatMoney,
     transformType: transformType,
     transformImageURL: transformImageURL

@@ -9,15 +9,32 @@ const config = require('../../config/config.js')
 Page({
   data: {
     date: `${year}-${month}`,
-    list: [{
-      type: 0,
-      key: 1,
-      value: 9950
-    }, {
-      type: 1,
-      key: 1,
-      value: 10034
-    }],
+    start: `${year - 5}-01-01`,
+    end: `${year + 5}-01-01`,
+    details: {
+      '2021-03-24': [{
+          type: 0,
+          key: 1,
+          value: 9950
+        },
+        {
+          type: 1,
+          key: 1,
+          value: 10034
+        }
+      ],
+      '2021-03-20': [{
+          type: 0,
+          key: 3,
+          value: 1752389
+        },
+        {
+          type: 1,
+          key: 1,
+          value: 10034
+        }
+      ]
+    },
     motto: '',
     userInfo: {},
     hasUserInfo: false,
