@@ -136,7 +136,7 @@
   content: '';
   position: absolute;
   width: 100%;
-  height: 1px;
+  height: 2rpx;
   bottom: -12rpx;
   right: 0;
   background-color: #eeeeee;

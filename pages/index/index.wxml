@@ -16,16 +16,17 @@
 <wxs src="../../wxs/utils.wxs" module="Utils"></wxs>
 <view class="container">
   <view class="card">
-    <view class="date" bindtap="changeDate">
-      <picker mode="date" value="{{date}}" fields="month" start="{{start}}" end="{{end}}" bindchange="handleDateChange"><text>{{date}}</text></picker>
+    <view class="date">
+      <picker mode="date" value="{{date}}" fields="month" start="{{start}}" end="{{end}}" bindchange="handleDateChange">
+        <text>{{date}}</text></picker>
     </view>
     <view class="wrap">
       <view class="surplus">
-        结余<text>0.0</text>元
+        结余<text>{{surplus}}</text>元
       </view>
       <view class="incoming-and-outgoings">
-        <view>收入<text>0.0</text>元</view>|
-        <view>支出<text>0.0</text>元</view>
+        <view>收入<text>{{incoming}}</text>元</view>|
+        <view>支出<text>{{outgoings}}</text>元</view>
       </view>
     </view>
   </view>

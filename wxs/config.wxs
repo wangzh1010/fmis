@@ -1,5 +1,5 @@
 module.exports = {
-    income: [{
+    incoming: [{
         key: 1,
         pinyin: 'gongzi',
         value: '工资'
@@ -16,7 +16,7 @@ module.exports = {
         pinyin: 'qita',
         value: '其他'
     }],
-    outcome: [{
+    outgoings: [{
         key: 1,
         pinyin: 'canyin',
         value: '餐饮'
@@ -40,5 +40,7 @@ module.exports = {
         key: 6,
         pinyin: 'qita',
         value: '其他'
-    }]
+    }],
+    IN: 0,
+    OUT: 1
 }

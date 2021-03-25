@@ -1,5 +1,5 @@
 var config = require('./config.wxs');
-var mapping = ['income', 'outcome'];
+var mapping = ['incoming', 'outgoings'];
 
 function transformType(item) {
     var key = mapping[item.type];
