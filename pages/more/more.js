@@ -6,7 +6,9 @@ const date = formatTime(new Date());
 const year = date.match(/^\d{4}/)[0];
 const yearMonth = date.match(/^\d{4}\-\d{2}/)[0];
 const config = require('../../config/config.js');
-const WxCharts = require('../../lib/wxcharts-min.js')
+const WxCharts = require('../../lib/wxcharts-min.js');
+let incoming = null;
+let outgoings = null;
 Page({
 
     /**
@@ -19,46 +21,59 @@ Page({
         currentTab: config.OUT,
         width: 320,
         height: 320,
-        details: {
-            incoming: [{
-                key: 1,
-                value: 9900
-            }, {
-                key: 2,
-                value: 1987
-            }, {
-                key: 3,
-                value: 19990
-            }, {
-                key: 4,
-                value: 9922
-            }],
-            outgoings: [{
-                key: 1,
-                value: 9900
-            }, {
-                key: 2,
-                value: 1987
-            }, {
-                key: 3,
-                value: 19990
-            }, {
-                key: 4,
-                value: 9922
-            }, {
-                key: 5,
-                value: 9022
-            }, {
-                key: 6,
-                value: 7922
-            }]
-        }
+        details: [{
+            type: 0,
+            key: 1,
+            value: 9900
+        }, {
+            type: 0,
+            key: 2,
+            value: 1987
+        }, {
+            type: 0,
+            key: 3,
+            value: 19990
+        }, {
+            type: 0,
+            key: 4,
+            value: 9922
+        }, {
+            type: 1,
+            key: 1,
+            value: 9900
+        }, {
+            type: 1,
+            key: 2,
+            value: 1987
+        }, {
+            type: 1,
+            key: 3,
+            value: 19990
+        }, {
+            type: 1,
+            key: 4,
+            value: 9922
+        }, {
+            type: 1,
+            key: 5,
+            value: 9022
+        }, {
+            type: 1,
+            key: 6,
+            value: 7922
+        }],
+        list: []
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        incoming = this.classification(config.IN);
+        outgoings = this.classification(config.OUT);
+        this.setData({
+            list: this.data.currentTab === config.OUT ? outgoings : incoming
+        })
         new WxCharts({
             animation: true,
             canvasId: 'pieCanvas',
@@ -164,5 +179,8 @@ Page({
         this.setData({
             currentTab: e.target.dataset.type
         });
+    },
+    classification(type) {
+        return this.data.details.map(item => item.type === type);
     }
 })
