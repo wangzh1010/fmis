@@ -46,10 +46,17 @@ function calculate(arr, type) {
     return (totalAmount / 100).toFixed(2);
 }
 
+function calculateRate(item, totalIn, totalOut) {
+    console.log(item.type,totalIn,totalOut)
+    var total = item.type === config.IN ? totalIn : totalOut;
+    return (item.value / total).toFixed(2);
+}
+
 module.exports = {
     calculate: calculate,
     formatDate: formatDate,
     formatMoney: formatMoney,
+    calculateRate: calculateRate,
     transformType: transformType,
     transformImageURL: transformImageURL
 }

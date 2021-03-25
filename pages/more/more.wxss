@@ -98,3 +98,14 @@
     height: 2rpx;
     background-color: #eeeeee;
 }
+
+.details>.row>.wrap>.name,
+.details>.row>.wrap>.rate {
+    width: 30%;
+    text-align: left;
+}
+
+.details>.row>.wrap>.amount {
+    width: 30%;
+    text-align: right;
+}

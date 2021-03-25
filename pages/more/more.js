@@ -6,7 +6,11 @@ const date = formatTime(new Date());
 const year = date.match(/^\d{4}/)[0];
 const yearMonth = date.match(/^\d{4}\-\d{2}/)[0];
 const config = require('../../config/config.js');
-const WxCharts = require('../../lib/wxcharts-min.js')
+const Utils = require('../../utils/util.js');
+const WxCharts = require('../../lib/wxcharts-min.js');
+let incoming = null;
+let outgoings = null;
+let pieChart = null;
 Page({
 
     /**
@@ -19,92 +23,59 @@ Page({
         currentTab: config.OUT,
         width: 320,
         height: 320,
-        details: {
-            incoming: [{
-                key: 1,
-                value: 9900
-            }, {
-                key: 2,
-                value: 1987
-            }, {
-                key: 3,
-                value: 19990
-            }, {
-                key: 4,
-                value: 9922
-            }],
-            outgoings: [{
-                key: 1,
-                value: 9900
-            }, {
-                key: 2,
-                value: 1987
-            }, {
-                key: 3,
-                value: 19990
-            }, {
-                key: 4,
-                value: 9922
-            }, {
-                key: 5,
-                value: 9022
-            }, {
-                key: 6,
-                value: 7922
-            }]
-        }
+        details: [{
+            type: 0,
+            key: 1,
+            value: 9900
+        }, {
+            type: 0,
+            key: 2,
+            value: 1987
+        }, {
+            type: 0,
+            key: 3,
+            value: 19990
+        }, {
+            type: 0,
+            key: 4,
+            value: 9922
+        }, {
+            type: 1,
+            key: 1,
+            value: 9900
+        }, {
+            type: 1,
+            key: 2,
+            value: 1987
+        }, {
+            type: 1,
+            key: 3,
+            value: 19990
+        }, {
+            type: 1,
+            key: 4,
+            value: 9922
+        }, {
+            type: 1,
+            key: 5,
+            value: 9022
+        }, {
+            type: 1,
+            key: 6,
+            value: 7922
+        }],
+        total: [0, 0],
+        list: []
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        new WxCharts({
-            animation: true,
-            canvasId: 'pieCanvas',
-            type: 'ring',
-            extra: {
-                ringWidth: 25,
-                pie: {
-                    offsetAngle: -45
-                }
-            },
-            title: {
-                name: '10%',
-                color: '#7cb5ec',
-                fontSize: 20
-            },
-            subtitle: {
-                name: '收益率',
-                color: '#666666',
-                fontSize: 15
-            },
-            series: [{
-                name: 'A',
-                data: 10
-            }, {
-                name: 'B',
-                data: 10
-            }, {
-                name: 'C',
-                data: 12
-            }, {
-                name: 'D',
-                data: 15
-            }, {
-                name: 'E',
-                data: 20
-            }, {
-                name: 'E',
-                data: 25
-            }],
-            width: this.data.width,
-            height: this.data.height,
-            dataLabel: true,
-            legend: false,
-            disablePieStroke: true,
-            background: '#fff'
-        })
+        incoming = this.classification(config.IN);
+        outgoings = this.classification(config.OUT);
+        this.refreshData();
+        this.refreshPieChart();
     },
 
     /**
@@ -164,5 +135,80 @@ Page({
         this.setData({
             currentTab: e.target.dataset.type
         });
+        this.refreshData();
+        this.refreshPieChart();
+    },
+    refreshData() {
+        this.setData({
+            list: this.data.currentTab === config.OUT ? outgoings : incoming
+        })
+    },
+    refreshPieChart() {
+        let name = this.data.total[this.data.currentTab] / 100;
+        let subname = this.data.currentTab === config.OUT ? '支出' : '收入';
+        if (pieChart) {
+            pieChart.updateData({
+                series: this.formatSeries(),
+                title: {
+                    name: name
+                },
+                subtitle: {
+                    name: subname
+                }
+            });
+            return;
+        }
+        pieChart = new WxCharts({
+            animation: true,
+            canvasId: 'pieCanvas',
+            type: 'ring',
+            extra: {
+                ringWidth: 25,
+                pie: {
+                    offsetAngle: -45
+                }
+            },
+            title: {
+                name: name,
+                color: '#7cb5ec',
+                fontSize: 16
+            },
+            subtitle: {
+                name: subname,
+                color: '#666666',
+                fontSize: 16
+            },
+            series: this.formatSeries(),
+            width: this.data.width,
+            height: this.data.height,
+            dataLabel: true,
+            legend: false,
+            disablePieStroke: true,
+            background: '#fff'
+        })
+    },
+    formatSeries() {
+        let series = [];
+        let data = this.data.currentTab === config.OUT ? outgoings : incoming;
+        data.forEach(item => {
+            series.push({
+                name: Utils.transformType(item),
+                data: item.value
+            })
+        })
+        return series;
+    },
+    classification(type) {
+        let arr = this.data.details.filter(item => item.type === type);
+        let amount = arr.reduce((sum, item) => {
+            return sum += item.value;
+        }, 0);
+        arr.forEach(item => {
+            item.rate = (item.value / amount * 100).toFixed(2);
+        })
+        this.setData({
+            ['total[' + type + ']']: amount
+        });
+        return arr;
     }
 })
