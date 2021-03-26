@@ -9,19 +9,6 @@
                 bindtap="handleTabChange">收入</text>
         </view>
     </view>
-    <!-- <view class="categories">
-        <view class="item" wx:for="{{list}}" wx:key="index">
-            <view class="img-wrap">
-                <image src="../../assets/{{item.pinyin}}.png" mode="aspectFit"/>
-            </view>
-            <text>{{item.value}}</text>
-        </view>
-    </view> -->
-    <!-- <view class="side-bar {{open ? 'slide-in-left' : ''}}">
-        <view class="wrap">
-            
-        </view>
-    </view> -->
     <sidebar open="{{open}}">
         <view class="categories">
             <view class="item" wx:for="{{list}}" wx:key="index">
@@ -32,18 +19,37 @@
             </view>
         </view>
     </sidebar>
-    <view class="">
-        <view>
-            <text>分类</text>
-            <text bindtap="showPopup">{{value}}</text>
+    <view class="form-group">
+        <view class="form-control">
+            <text class="title">日期</text>
+            <view class="content picker-wrap">
+                <picker mode="date" value="{{day}}" fields="day" start="{{start}}" end="{{end}}"
+                    bindchange="handleDateChange">
+                    <text>{{day}}</text>
+                </picker>
+            </view>
         </view>
-        <view>
-            <text>金额</text>
-            <text>测试</text>
+        <view class="form-control">
+            <text class="title">分类</text>
+            <view class="content " bindtap="showPopup">
+                <block wx:if="{{key > 0}}">
+                    <image class="icon" src="../../assets/{{icon}}_on.png" mode="aspectFit" />
+                </block>
+                <text>{{value}}</text>
+            </view>
         </view>
-        <view>
-            <text>备注</text>
-            <text>测试</text>
+        <view class="form-control">
+            <text class="title">金额</text>
+            <view class="content"><input type="digit" value="{{money}}" bindinput="handleMoneyChange"/></view>
+        </view>
+        <view class="form-control">
+            <text class="title">备注</text>
+            <view class="content"><textarea value="{{remarks}}" bindinput="handleRemarksChange" auto-height></textarea></view>
+        </view>
+        <view class="form-control btn-wrap">
+            <view class="content">
+                <button class="save-btn" bindtap="handleSaveBtnClick">保存</button>
+            </view>
         </view>
     </view>
 </view>

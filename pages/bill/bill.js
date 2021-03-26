@@ -3,7 +3,7 @@ const {
     formatTime
 } = require('../../utils/util.js');
 const date = formatTime(new Date());
-const year = date.match(/^\d{4}/)[0];
+const year = parseInt(date.match(/^\d{4}/)[0]);
 Page({
 
     /**

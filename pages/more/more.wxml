@@ -8,7 +8,7 @@
             <text data-type="{{Config.IN}}" class="tab {{currentTab === Config.IN ? 'active' : ''}}"
                 bindtap="handleTabChange">收入</text>
         </view>
-        <view class="wrap">
+        <view class="picker-wrap">
             <picker mode="date" fields="month" start="{{start}}" end="{{end}}" value="{{date}}"
                 bindchange="handleDateChange">
                 <text>{{date}}</text>

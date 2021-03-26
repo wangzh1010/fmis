@@ -9,7 +9,7 @@
     background: linear-gradient(90deg, #64b5f6, #1296db);
 }
 
-.card>.date {
+.card>.picker-wrap {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -18,7 +18,8 @@
     font-size: 28rpx;
 }
 
-.card>.date text {
+.card>.picker-wrap text {
+    display: block;
     color: #fff;
     padding: 4rpx 32rpx;
     border-radius: 10rpx;

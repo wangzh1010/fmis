@@ -1,4 +1,10 @@
 const config = require('../../config/config.js');
+const {
+    formatTime
+} = require('../../utils/util.js');
+const date = formatTime(new Date());
+let year = parseInt(date.match(/^\d{4}/)[0]);
+let day = date.match(/^\d{4}\-\d{2}\-\d{2}/)[0];
 Page({
 
     /**
@@ -9,7 +15,13 @@ Page({
         list: [],
         open: false,
         key: -1,
-        value: '请选择'
+        value: '请选择',
+        icon: '',
+        day: day,
+        money: '',
+        remarks: '',
+        start: `${year - 5}-01-01`,
+        end: `${year + 5}-01-01`,
     },
 
     /**
@@ -76,7 +88,13 @@ Page({
     refreshCategories() {
         let list = this.data.currentTab === config.IN ? config.incoming : config.outgoings;
         this.setData({
-            list
+            list,
+            key: -1,
+            value: '请选择',
+            icon: '',
+            money: '',
+            remarks: '',
+            day: day
         })
     },
     showPopup() {
@@ -92,7 +110,29 @@ Page({
         let target = config[key].find(item => item.key === e.currentTarget.dataset.key);
         this.setData({
             key: target.key,
-            value: target.value
+            value: target.value,
+            icon: target.pinyin
         })
+    },
+    handleDateChange(e) {
+        this.setData({
+            day: e.detail.value
+        })
+    },
+    handleMoneyChange(e) {
+        this.setData({
+            money: e.detail.value
+        })
+    },
+    handleRemarksChange(e) {
+        this.setData({
+            remarks: e.detail.value
+        })
+    },
+    handleSaveBtnClick() {
+        console.log(this.data.day)
+        console.log(this.data.key)
+        console.log(this.data.money)
+        console.log(this.data.remarks)
     }
 })

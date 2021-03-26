@@ -1,6 +1,6 @@
 <view class="container">
     <view class="card">
-        <view class="date">
+        <view class="picker-wrap">
             <picker mode="date" value="{{date}}" fields="year" start="{{start}}" end="{{end}}"
                 bindchange="handleDateChange">
                 <text>{{date}}</text></picker>

@@ -1,7 +1,7 @@
 <wxs src="../../wxs/utils.wxs" module="Utils"></wxs>
 <view class="container">
   <view class="card">
-    <view class="date">
+    <view class="picker-wrap">
       <picker mode="date" value="{{date}}" fields="month" start="{{start}}" end="{{end}}" bindchange="handleDateChange">
         <text>{{date}}</text></picker>
     </view>
