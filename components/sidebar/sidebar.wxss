@@ -1,0 +1,50 @@
+.side-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.side-bar.slide-in {
+    transform: translate(0, 0);
+}
+
+.side-bar.slide-out {
+    transition: transform 10ms ease 500ms;
+    transform: translate(-100vw, 0);
+}
+
+.side-bar>.layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+}
+
+.slide-in>.layer {
+    opacity: 1;
+}
+
+.slide-out>.layer {
+    opacity: 0;
+}
+
+.side-bar>.inner {
+    width: 85%;
+    height: 100%;
+    background-color: #ffffff;
+}
+
+.slide-in>.inner {
+    transform: translate(0, 0);
+    transition: transform 500ms ease 10ms;
+}
+
+.slide-out>.inner {
+    transform: translate(-100vw, 0);
+    transition: transform 500ms ease 10ms;
+}

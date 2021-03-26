@@ -1,0 +1,70 @@
+.card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 94%;
+    height: 120rpx;
+    color: #333;
+    border-radius: 10rpx;
+    background: linear-gradient(90deg, #64b5f6, #1296db);
+}
+
+.card>.switch {
+    display: flex;
+    flex-direction: row;
+    height: 64rpx;
+    line-height: 64rpx;
+    border: 1px solid #333;
+    border-radius: 6rpx;
+}
+
+.card>.switch>.tab {
+    width: 120rpx;
+    height: 64rpx;
+    text-align: center;
+}
+
+.card>.switch>.active {
+    color: #fff;
+    background-color: #333;
+}
+
+.categories {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.categories>.item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24rpx;
+    text-align: center;
+    width: 25%;
+}
+
+.categories .img-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 100%;
+    background-color: #696969;
+    margin-bottom: 10rpx;
+}
+
+.categories .img-wrap>image {
+    width: 60rpx;
+    height: 60rpx;
+}
+
+.categories .img-wrap+text {
+    font-size: 24rpx;
+}

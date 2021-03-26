@@ -1,21 +1,26 @@
-<!--pages/my/my.wxml-->
 <view class="container">
   <view class="card">
-    <view class="date" bindtap="changeDate">
-      <picker mode="date" value="{{date}}" bindchange="handleDateChange"><text>{{date}}</text></picker>
+    <view class="userinfo">
+      <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 登录
+      </button>
+      <block wx:else>
+        <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+      </block>
     </view>
-    <view class="wrap">
-      <view class="surplus">
-        余<text>0.0</text>元
+    <view class="usage-record">
+      <view class="item">
+        <text class="day">62</text>
+        <text class="desc">使用天数</text>
       </view>
-      <view class="incoming-and-outgoings">
-        <view>收<text>0.0</text>元</view>|
-        <view>支<text>0.0</text>元</view>
+      <view class="item">
+        <text class="day">2</text>
+        <text class="desc">总记账天数</text>
+      </view>
+      <view class="item">
+        <text class="day">14</text>
+        <text class="desc">总记账笔数</text>
       </view>
     </view>
   </view>
-  <view>
-    
-  </view>
-  <view class="add" bindtap="addRecord"><image src="../../assets/add.png" mode="aspectFit"/></view>
 </view>

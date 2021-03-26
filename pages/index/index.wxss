@@ -1,26 +1,3 @@
-/**index.wxss**/
-/* .userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 200px;
-} */
-
-/* pages/my/my.wxss */
 .card {
   display: flex;
   flex-direction: column;
@@ -43,8 +20,8 @@
 
 .card>.date text {
   color: #fff;
-  padding: 0rpx 36rpx;
-  border-radius: 20rpx;
+  padding: 4rpx 32rpx;
+  border-radius: 10rpx;
   background-color: #0088cc;
 }
 

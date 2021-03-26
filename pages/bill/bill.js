@@ -1,11 +1,21 @@
 // pages/bill/bill.js
+const {
+    formatTime
+} = require('../../utils/util.js');
+const date = formatTime(new Date());
+const year = date.match(/^\d{4}/)[0];
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-
+        date: year,
+        start: `${year - 5}-01-01`,
+        end: `${year + 5}-01-01`,
+        surplus: 0,
+        incoming: 0,
+        outgoings: 0,
     },
 
     /**

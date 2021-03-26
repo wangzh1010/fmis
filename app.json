@@ -1,11 +1,11 @@
 {
-    "entryPagePath": "pages/more/more",
+    "entryPagePath": "pages/record/record",
     "pages": [
         "pages/index/index",
-        "pages/logs/logs",
         "pages/my/my",
         "pages/more/more",
-        "pages/bill/bill"
+        "pages/bill/bill",
+        "pages/record/record"
     ],
     "window": {
         "backgroundTextStyle": "light",

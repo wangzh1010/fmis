@@ -1,11 +1,6 @@
 // app.js
 App({
   onLaunch() {
-    // 展示本地存储能力
-    const logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
     // 登录
     wx.login({
       success: res => {
@@ -33,19 +28,19 @@ App({
       }
     })
   },
-  onShow(){
+  onShow() {
     console.log('show...' + this.route)
   },
-  onHide(){
+  onHide() {
     console.log('hide...')
   },
-  onError(err){
+  onError(err) {
     console.error(err)
   },
-  onPageNotFound(res){
+  onPageNotFound(res) {
     console.error(JSON.stringify(res))
   },
-  onUnhandledRejection(res){
+  onUnhandledRejection(res) {
     console.error(res.reason)
   },
   globalData: {

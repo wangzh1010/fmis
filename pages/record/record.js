@@ -1,20 +1,22 @@
-const app = getApp();
+const config = require('../../config/config.js');
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-        userInfo: {},
-        hasUserInfo: false,
-        canIUse: wx.canIUse('button.open-type.getUserInfo')
+        currentTab: config.OUT,
+        list: [],
+        open: false,
+        key: -1,
+        value: '请选择'
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-
+        this.refreshCategories();
     },
 
     /**
@@ -65,21 +67,32 @@ Page({
     onShareAppMessage: function () {
 
     },
-    getUserInfo(e) {
-        console.log(e)
-        app.globalData.userInfo = e.detail.userInfo
+    handleTabChange(e) {
         this.setData({
-            userInfo: e.detail.userInfo,
-            hasUserInfo: true
+            currentTab: e.target.dataset.type
+        });
+        this.refreshCategories();
+    },
+    refreshCategories() {
+        let list = this.data.currentTab === config.IN ? config.incoming : config.outgoings;
+        this.setData({
+            list
         })
     },
-    handleDateChange(e) {
-        let arr = e.detail.value.split('-');
+    showPopup() {
         this.setData({
-            date: `${arr[0]}-${arr[1]}`
+            open: true
         });
     },
-    addRecord() {
-
+    handleCategorySelected(e) {
+        this.setData({
+            open: false
+        });
+        let key = this.data.currentTab === config.IN ? 'incoming' : 'outgoings';
+        let target = config[key].find(item => item.key === e.currentTarget.dataset.key);
+        this.setData({
+            key: target.key,
+            value: target.value
+        })
     }
 })

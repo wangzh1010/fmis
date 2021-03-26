@@ -1,0 +1,6 @@
+<view class="side-bar {{open ? 'slide-in' : 'slide-out'}}">
+    <view class="layer"></view>
+    <view class="inner">
+        <slot></slot>
+    </view>    
+</view>

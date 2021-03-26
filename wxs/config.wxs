@@ -13,6 +13,18 @@ module.exports = {
         value: '理财'
     }, {
         key: 4,
+        pinyin: 'jianzhi',
+        value: '兼职'
+    }, {
+        key: 5,
+        pinyin: 'jiangjin',
+        value: '奖金'
+    }, {
+        key: 6,
+        pinyin: 'baoxiao',
+        value: '报销'
+    }, {
+        key: 7,
         pinyin: 'qita',
         value: '其他'
     }],
@@ -30,14 +42,54 @@ module.exports = {
         value: '日用'
     }, {
         key: 4,
+        pinyin: 'guoshu',
+        value: '果蔬'
+    }, {
+        key: 5,
         pinyin: 'hongbao',
         value: '红包'
     }, {
-        key: 5,
+        key: 6,
         pinyin: 'jiaotong',
         value: '交通'
     }, {
-        key: 6,
+        key: 7,
+        pinyin: 'zhufang',
+        value: '住房'
+    }, {
+        key: 8,
+        pinyin: 'shuji',
+        value: '书籍'
+    }, {
+        key: 9,
+        pinyin: 'yiliao',
+        value: '医疗'
+    }, {
+        key: 10,
+        pinyin: 'yule',
+        value: '娱乐'
+    }, {
+        key: 11,
+        pinyin: 'tongxun',
+        value: '通讯'
+    }, {
+        key: 12,
+        pinyin: 'fushi',
+        value: '服饰'
+    }, {
+        key: 13,
+        pinyin: 'lvxing',
+        value: '旅行'
+    }, {
+        key: 14,
+        pinyin: 'shuma',
+        value: '数码'
+    }, {
+        key: 15,
+        pinyin: 'liwu',
+        value: '礼物'
+    }, {
+        key: 16,
         pinyin: 'qita',
         value: '其他'
     }],

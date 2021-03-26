@@ -144,7 +144,7 @@ Page({
         })
     },
     refreshPieChart() {
-        let name = this.data.total[this.data.currentTab] / 100;
+        let name = (this.data.total[this.data.currentTab] / 100).toFixed(2);
         let subname = this.data.currentTab === config.OUT ? '支出' : '收入';
         if (pieChart) {
             pieChart.updateData({
