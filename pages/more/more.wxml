@@ -1,4 +1,5 @@
 <wxs src="../../wxs/config.wxs" module="Config"></wxs>
+<wxs src="../../wxs/utils.wxs" module="Utils"></wxs>
 <view class="container">
     <view class="card">
         <view class="switch">
@@ -18,35 +19,15 @@
         <canvas canvas-id="pieCanvas"></canvas>
     </view>
     <view class="details">
-        <view class="caption">3月收入排行榜</view>
-        <view class="row">
+        <view class="caption">3月{{currentTab === Config.IN ? '收入' : '支出'}}排行榜</view>
+        <view class="row" wx:for="{{list}}" wx:key="index">
             <view class="img-wrap">
-                <image src="../../assets/canyin.png" mode="aspectFit"/>
+                <image src="{{Utils.transformImageURL(item)}}" mode="aspectFit" />
             </view>
             <view class="wrap">
-                <text>理财</text>
-                <text>37.33%</text>
-                <text>100.00</text>
-            </view>
-        </view>
-        <view class="row">
-            <view class="img-wrap">
-                <image src="../../assets/canyin.png" mode="aspectFit"/>
-            </view>
-            <view class="wrap">
-                <text>理财</text>
-                <text>37.33%</text>
-                <text>100.00</text>
-            </view>
-        </view>
-        <view class="row">
-            <view class="img-wrap">
-                <image src="../../assets/canyin.png" mode="aspectFit"/>
-            </view>
-            <view class="wrap">
-                <text>理财</text>
-                <text>37.33%</text>
-                <text>100.00</text>
+                <text class="name">{{Utils.transformType(item)}}</text>
+                <text class="rate">{{item.rate}}%</text>
+                <text class="amount">{{Utils.formatMoney(item)}}</text>
             </view>
         </view>
     </view>
