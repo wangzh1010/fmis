@@ -107,5 +107,10 @@ Page({
     wx.navigateTo({
       url: '../record/record',
     })
+  },
+  showDetail(){
+    wx.navigateTo({
+      url: '../detail/detail',
+    })
   }
 })

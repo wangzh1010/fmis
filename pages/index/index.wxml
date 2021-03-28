@@ -25,7 +25,7 @@
           <view>结余：<text class="amount">{{Utils.calculate(arr)}}</text></view>
         </view>
       </view>
-      <view class="row" wx:for="{{arr}}" wx:for-item="item" wx:key="index">
+      <view class="row" wx:for="{{arr}}" wx:for-item="item" wx:key="index" bindtap="showDetail">
         <view class="img-wrap">
           <image src="{{Utils.transformImageURL(item)}}" mode="aspectFit" />
         </view>

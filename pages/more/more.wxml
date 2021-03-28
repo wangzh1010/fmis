@@ -20,7 +20,7 @@
     </view>
     <view class="details">
         <view class="caption">3月{{currentTab === Config.IN ? '收入' : '支出'}}排行榜</view>
-        <view class="row" wx:for="{{list}}" wx:key="index">
+        <view class="row" wx:for="{{list}}" wx:key="index" data-key="{{item.key}}" bindtap="showStatis">
             <view class="img-wrap">
                 <image src="{{Utils.transformImageURL(item)}}" mode="aspectFit" />
             </view>

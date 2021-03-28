@@ -1,50 +1,52 @@
 {
-    "entryPagePath": "pages/record/record",
-    "pages": [
-        "pages/index/index",
-        "pages/my/my",
-        "pages/more/more",
-        "pages/bill/bill",
-        "pages/record/record"
-    ],
-    "window": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "FMIS",
-        "navigationBarTextStyle": "black"
-    },
-    "tabBar": {
-        "color": "#000000",
-        "selectedColor": "#1296db",
-        "backgroundColor": "#ffffff",
-        "borderStyle": "black",
-        "list": [
-            {
-                "pagePath": "pages/index/index",
-                "text": "Detail",
-                "iconPath": "assets/detail.png",
-                "selectedIconPath": "assets/detail_on.png"
-            },
-            {
-                "pagePath": "pages/more/more",
-                "text": "More",
-                "iconPath": "assets/more.png",
-                "selectedIconPath": "assets/more_on.png"
-            },
-            {
-                "pagePath": "pages/bill/bill",
-                "text": "Bill",
-                "iconPath": "assets/bill.png",
-                "selectedIconPath": "assets/bill_on.png"
-            },
-            {
-                "pagePath": "pages/my/my",
-                "text": "My",
-                "iconPath": "assets/me.png",
-                "selectedIconPath": "assets/me_on.png"
-            }
-        ]
-    },
-    "style": "v2",
-    "sitemapLocation": "sitemap.json"
+  "entryPagePath": "pages/statis/statis",
+  "pages": [
+    "pages/index/index",
+    "pages/my/my",
+    "pages/more/more",
+    "pages/bill/bill",
+    "pages/record/record",
+    "pages/detail/detail",
+    "pages/statis/statis"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "FMIS",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#000000",
+    "selectedColor": "#1296db",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "Detail",
+        "iconPath": "assets/detail.png",
+        "selectedIconPath": "assets/detail_on.png"
+      },
+      {
+        "pagePath": "pages/more/more",
+        "text": "More",
+        "iconPath": "assets/more.png",
+        "selectedIconPath": "assets/more_on.png"
+      },
+      {
+        "pagePath": "pages/bill/bill",
+        "text": "Bill",
+        "iconPath": "assets/bill.png",
+        "selectedIconPath": "assets/bill_on.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "My",
+        "iconPath": "assets/me.png",
+        "selectedIconPath": "assets/me_on.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
 }

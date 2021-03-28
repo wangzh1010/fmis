@@ -1,0 +1,31 @@
+<view class="container">
+  <view class="card">
+    <view class="img-wrap">
+      <image src="../../assets/bill_on.png" mode="aspectFit" />
+    </view>
+    <text>理财</text>
+  </view>
+  <view class="details">
+    <view class="row">
+      <text class="title">类型</text>
+      <text>收入</text>
+    </view>
+    <view class="row">
+      <text class="title">金额</text>
+      <text>3.20</text>
+    </view>
+    <view class="row">
+      <text class="title">日期</text>
+      <text>2021-03-26</text>
+    </view>
+    <view class="row">
+      <text class="title">备注</text>
+      <text>测试</text>
+    </view>
+  </view>
+  <view class="footer">
+    <button hover-class="active" bindtap="handleEdit">编辑</button>
+    <text class="v-line"></text>
+    <button hover-class="active" bindtap="handleDelete">删除</button>
+  </view>
+</view>

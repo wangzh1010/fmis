@@ -24,6 +24,9 @@ function transformImageURL(item) {
 }
 
 function formatMoney(item) {
+    if (typeof item !== 'object') {
+        return (item / 100).toFixed(2);
+    }
     var base = item.type === 0 ? 1 : -1;
     return (base * item.value / 100).toFixed(2);
 }
@@ -47,7 +50,7 @@ function calculate(arr, type) {
 }
 
 function calculateRate(item, totalIn, totalOut) {
-    console.log(item.type,totalIn,totalOut)
+    console.log(item.type, totalIn, totalOut)
     var total = item.type === config.IN ? totalIn : totalOut;
     return (item.value / total).toFixed(2);
 }

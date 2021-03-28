@@ -210,5 +210,12 @@ Page({
             ['total[' + type + ']']: amount
         });
         return arr;
+    },
+    showStatis(e){
+        let key = e.currentTarget.dataset.key;
+        console.log(key)
+        wx.navigateTo({
+          url: '../statis/statis?key' + key,
+        })
     }
 })
