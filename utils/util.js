@@ -26,7 +26,55 @@ function transformType(item) {
   return '';
 }
 
+function sendRequest(options) {
+  return new Promise((resolve, reject) => {
+    let data = options.data;
+    let times = config.RETRY_TIMES;
+    let delay = config.RETRY_DELAY;
+    let url = config.SERVER + options.url;
+
+    function ajax() {
+      return new Promise((resolve, reject) => {
+        wx.request({
+          url: url,
+          data: data,
+          dataType: 'json',
+          method: options.options || 'GET',
+          header: options.header || {
+            'content-type': 'application/json'
+          },
+          success(resp) {
+            if (resp.statusCode === 200 && resp.data && resp.data.code === 200) {
+              resolve(resp.data)
+            } else {
+              reject(resp)
+            }
+          },
+          fail(e) {
+            reject(e)
+          }
+        });
+      });
+    }
+
+    function attempt() {
+      ajax().then(data => {
+        resolve(data);
+      }).catch(e => {
+        if (times > 0) {
+          times--;
+          setTimeout(attempt, delay);
+        } else {
+          reject(e);
+        }
+      })
+    }
+    attempt();
+  });
+}
+
 module.exports = {
   formatTime,
+  sendRequest,
   transformType
 }

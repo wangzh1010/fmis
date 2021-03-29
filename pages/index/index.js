@@ -16,8 +16,9 @@ Page({
     date: yearMonth,
     start: `${year - 5}-01-01`,
     end: `${year + 5}-01-01`,
-    details: {
-      '2021-03-24': [{
+    details: [{
+      date: '2021-03-24',
+      data: [{
           type: 0,
           key: 1,
           value: 9950
@@ -27,8 +28,10 @@ Page({
           key: 1,
           value: 10034
         }
-      ],
-      '2021-03-20': [{
+      ]
+    }, {
+      date: '2021-03-20',
+      data: [{
           type: 0,
           key: 3,
           value: 1752389
@@ -39,7 +42,7 @@ Page({
           value: 10034
         }
       ]
-    },
+    }],
     surplus: 0,
     incoming: 0,
     outgoings: 0
@@ -72,8 +75,8 @@ Page({
       })
     }
     let items = [0, 0, 0];
-    Object.keys(this.data.details).forEach(key => {
-      let arr = this.data.details[key];
+    this.data.details.forEach(item => {
+      let arr = item.data;
       items[0] += this.calculate(arr, config.IN);
       items[1] += this.calculate(arr, config.OUT);
       items[2] += this.calculate(arr);
@@ -103,12 +106,12 @@ Page({
       date: `${arr[0]}-${arr[1]}`
     });
   },
-  addRecord(){
+  addRecord() {
     wx.navigateTo({
       url: '../record/record',
     })
   },
-  showDetail(){
+  showDetail() {
     wx.navigateTo({
       url: '../detail/detail',
     })

@@ -10,7 +10,7 @@
         <text>{{item.date}}</text>
         <text>共 {{item.value}}</text>
       </view>
-      <view class="row" wx:for="{{item.data}}" wx:key="index">
+      <view class="row" wx:for="{{item.data}}" wx:key="index" bindtap="showDetail">
         <view class="img-wrap">
           <image src="../../assets/canyin.png" mode="aspectFit" />
         </view>

@@ -91,5 +91,10 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  showDetail(){
+    wx.navigateTo({
+      url: '../record/record',
+    })
   }
 })

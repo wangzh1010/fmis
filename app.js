@@ -1,12 +1,18 @@
 // app.js
+const {
+  ACCESS_TOKEN
+} = require('./config/config.js');
+const {
+  sendRequest
+} = require('./utils/util.js');
 App({
   onLaunch() {
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      }
-    })
+    try {
+      let token = wx.getStorageSync(ACCESS_TOKEN);
+      this.wechatLogin(token);
+    } catch (error) {
+      this.wechatLogin();
+    }
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -44,6 +50,44 @@ App({
     console.error(res.reason)
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    accessToken: null
+  },
+  wechatLogin(token) {
+    if (token) {
+      sendRequest({
+        url: '/fmis/login',
+        data: {
+          token
+        }
+      }).then(data => {
+        this.globalData.accessToken = data.token;
+        wx.setStorage({
+          data: data.token,
+          key: ACCESS_TOKEN,
+        })
+      })
+    } else {
+      this.register();
+    }
+  },
+  register() {
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        sendRequest({
+          url: '/fmis/register',
+          data: {
+            code: res.code
+          }
+        }).then(data => {
+          this.globalData.accessToken = data.token;
+          wx.setStorage({
+            data: data.token,
+            key: ACCESS_TOKEN,
+          })
+        })
+      }
+    })
   }
 })

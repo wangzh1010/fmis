@@ -15,18 +15,18 @@
       </view>
     </view>
   </view>
-  <block wx:for="{{details}}" wx:key="index" wx:for-index="date" wx:for-item="arr">
+  <block wx:for="{{details}}" wx:key="index">
     <view class="details">
       <view class="summary">
-        <view class="date">{{Utils.formatDate(date)}}</view>
+        <view class="date">{{Utils.formatDate(item.date)}}</view>
         <view class="wrap">
-          <view>收入：<text class="amount">{{Utils.calculate(arr, 0)}}</text></view>
-          <view>支出：<text class="amount">{{Utils.calculate(arr, 1)}}</text></view>
-          <view>结余：<text class="amount">{{Utils.calculate(arr)}}</text></view>
+          <view>收入：<text class="amount">{{Utils.calculate(item.data, 0)}}</text></view>
+          <view>支出：<text class="amount">{{Utils.calculate(item.data, 1)}}</text></view>
+          <view>结余：<text class="amount">{{Utils.calculate(item.data)}}</text></view>
         </view>
       </view>
-      <view class="row" wx:for="{{arr}}" wx:for-item="item" wx:key="index" bindtap="showDetail">
-        <view class="img-wrap">
+      <view class="row" wx:for="{{item.data}}" wx:key="index" bindtap="showDetail">
+        <view class="img-wrap"> 
           <image src="{{Utils.transformImageURL(item)}}" mode="aspectFit" />
         </view>
         <view class="wrap">
