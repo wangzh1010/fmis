@@ -32,6 +32,8 @@ function sendRequest(options) {
     let times = config.RETRY_TIMES;
     let delay = config.RETRY_DELAY;
     let url = config.SERVER + options.url;
+    let token = wx.getStorageSync(config.ACCESS_TOKEN);
+    data.token = token;
 
     function ajax() {
       return new Promise((resolve, reject) => {
@@ -39,7 +41,7 @@ function sendRequest(options) {
           url: url,
           data: data,
           dataType: 'json',
-          method: options.options || 'GET',
+          method: options.method || 'POST',
           header: options.header || {
             'content-type': 'application/json'
           },
