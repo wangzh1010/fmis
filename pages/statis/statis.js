@@ -1,4 +1,5 @@
-// pages/statis/statis.js
+const API = require('../../config/api.js');
+const Utils = require('../../utils/util.js');
 Page({
 
   /**
@@ -35,13 +36,27 @@ Page({
         value: 90501
       }]
     }],
+    amount: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    Utils.sendRequest({
+      url: API.DETAILS,
+      data: {
+        date: options.date,
+        type: options.type,
+        bill_type: options.bill_type
+      }
+    }).then(resp => {
+      let [amount, result] = this.formatData(resp.data);
+      this.setData({
+        details: result,
+        amount: Utils.formatMoney(amount)
+      });
+    })
   },
 
   /**
@@ -92,9 +107,37 @@ Page({
   onShareAppMessage: function () {
 
   },
-  showDetail(){
+  formatData(sourceData) {
+    let result = [];
+    let keys = [];
+    let amount = 0;
+    sourceData.forEach(item => {
+      let key = item.createtime.match(/\d{4}\-\d{2}\-\d{2}/)[0];
+      let data = Object.create(null);
+      data.type = item.type;
+      data.key = item.bill_type;
+      data.value = item.amount;
+      // 总
+      amount += item.amount;
+      if (keys.includes(key)) {
+        let target = result.find(item => item.date === key);
+        // 分总
+        target.total += data.value;
+        target.data.push(data);
+      } else {
+        keys.push(key);
+        result.push({
+          date: key,
+          total: data.value,
+          data: [data]
+        })
+      }
+    });
+    return [amount, result];
+  },
+  showDetail() {
     wx.navigateTo({
-      url: '../record/record',
+      url: '../detail/detail',
     })
   }
 })

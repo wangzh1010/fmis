@@ -1,26 +1,28 @@
+<wxs src="../../wxs/utils.wxs" module="Utils"></wxs>
+<wxs src="../../wxs/config.wxs" module="Config"></wxs>
 <view class="container">
   <view class="card">
     <view class="img-wrap">
-      <image src="../../assets/bill_on.png" mode="aspectFit" />
+      <image src="{{Utils.transformImageURL(cached)}}" mode="aspectFit" />
     </view>
-    <text>理财</text>
+    <text>{{Utils.transformType(cached)}}</text>
   </view>
   <view class="details">
     <view class="row">
       <text class="title">类型</text>
-      <text>收入</text>
+      <text>{{cached.type === Config.IN ? '收入' : '支出'}}</text>
     </view>
     <view class="row">
       <text class="title">金额</text>
-      <text>3.20</text>
+      <text>{{Utils.formatMoney(cached.amount)}}</text>
     </view>
     <view class="row">
       <text class="title">日期</text>
-      <text>2021-03-26</text>
+      <text>{{cached.date}}</text>
     </view>
     <view class="row">
       <text class="title">备注</text>
-      <text>测试</text>
+      <text>{{cached.remarks}}</text>
     </view>
   </view>
   <view class="footer">

@@ -1,6 +1,8 @@
-// pages/bill/bill.js
+const API = require('../../config/api.js');
+const config = require('../../config/config.js');
 const {
-    formatTime
+    formatTime,
+    sendRequest
 } = require('../../utils/util.js');
 const date = formatTime(new Date());
 const year = parseInt(date.match(/^\d{4}/)[0]);
@@ -15,14 +17,34 @@ Page({
         end: `${year + 5}-01-01`,
         surplus: 0,
         incoming: 0,
-        outgoings: 0,
+        outgoing: 0,
+        results: []
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-
+        sendRequest({
+            url: API.BILL,
+            data: {
+                date: this.data.date
+            }
+        }).then(resp => {
+            if (resp.code === 200) {
+                let data = this.formatData(resp.data);
+                this.setData({
+                    results: data.results,
+                    surplus: data.surplus,
+                    incoming: data.incoming,
+                    outgoing: data.outgoing
+                })
+            } else {
+                wx.showToast({
+                    title: resp.message,
+                });
+            }
+        })
     },
 
     /**
@@ -72,5 +94,26 @@ Page({
      */
     onShareAppMessage: function () {
 
+    },
+    formatData(arr) {
+        let data = Object.create(null);
+        data.incoming = 0;
+        data.outgoing = 0;
+        data.surplus = 0;
+        data.keys = [];
+        data.results = {};
+        arr.forEach(item => {
+            let key = item.type === config.IN ? 'incoming' : 'outgoing';
+            if (data.keys.includes(item.mont)) {
+                data.results[item.mont][item.type] = item.amount;
+            } else {
+                data.keys.push(item.mont);
+                data.results[item.mont] = [0, 0];
+                data.results[item.mont][item.type] = item.amount;
+            }
+            data[key] += item.amount;
+        });
+        data.surplus = data.incoming - data.outgoing;
+        return data;
     }
 })

@@ -1,3 +1,4 @@
+<wxs src="../../wxs/utils.wxs" module="Utils"></wxs>
 <view class="container">
     <view class="card">
         <view class="picker-wrap">
@@ -7,11 +8,11 @@
         </view>
         <view class="wrap">
             <view class="surplus">
-                结余<text>{{surplus}}</text>元
+                结余<text>{{Utils.formatMoney(surplus)}}</text>元
             </view>
             <view class="incoming-and-outgoings">
-                <view>收入<text>{{incoming}}</text>元</view>|
-                <view>支出<text>{{outgoings}}</text>元</view>
+                <view>收入<text>{{Utils.formatMoney(incoming)}}</text>元</view>|
+                <view>支出<text>{{Utils.formatMoney(outgoing)}}</text>元</view>
             </view>
         </view>
     </view>
@@ -22,23 +23,11 @@
             <text>支出</text>
             <text>结余</text>
         </view>
-        <view class="tbody">
-            <text>03月</text>
-            <text>998.99</text>
-            <text>669.87</text>
-            <text>123.45</text>
-        </view>
-        <view class="tbody">
-            <text>02月</text>
-            <text>998.99</text>
-            <text>669.87</text>
-            <text>123.45</text>
-        </view>
-        <view class="tbody">
-            <text>01月</text>
-            <text>998.99</text>
-            <text>669.87</text>
-            <text>123.45</text>
+        <view class="tbody" wx:for="{{results}}" wx:key="index">
+            <text>{{index}}</text>
+            <text>{{Utils.formatMoney(item[0])}}</text>
+            <text>{{Utils.formatMoney(item[1])}}</text>
+            <text>{{Utils.formatMoney(item[0] - item[1])}}</text>
         </view>
     </view>
 </view>

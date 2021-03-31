@@ -1,11 +1,13 @@
 // pages/more/more.js
 const {
-    formatTime
+    formatTime,
+    sendRequest
 } = require('../../utils/util.js');
 const date = formatTime(new Date());
 const year = parseInt(date.match(/^\d{4}/)[0]);
 const yearMonth = date.match(/^\d{4}\-\d{2}/)[0];
 const config = require('../../config/config.js');
+const API = require('../../config/api.js');
 const Utils = require('../../utils/util.js');
 const WxCharts = require('../../lib/wxcharts-min.js');
 let incoming = null;
@@ -18,8 +20,8 @@ Page({
      */
     data: {
         date: yearMonth,
-        start: year - 5,
-        end: year + 5,
+        start: `${year - 5}-01-01`,
+        end: `${year + 5}-01-01`,
         currentTab: config.OUT,
         width: 320,
         height: 320,
@@ -72,10 +74,19 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        incoming = this.classification(config.IN);
-        outgoings = this.classification(config.OUT);
-        this.refreshData();
-        this.refreshPieChart();
+        sendRequest({
+            method: 'POST',
+            url: API.MORE,
+            data: {
+                date: this.data.date
+            }
+        }).then(resp => {
+            let data = this.formatData(resp.data);
+            incoming = this.classification(data, config.IN);
+            outgoings = this.classification(data, config.OUT);
+            this.refreshData();
+            this.refreshPieChart();
+        });
     },
 
     /**
@@ -198,8 +209,19 @@ Page({
         })
         return series;
     },
-    classification(type) {
-        let arr = this.data.details.filter(item => item.type === type);
+    formatData(arr) {
+        let result = [];
+        arr.forEach(item => {
+            let data = Object.create(null);
+            data.type = item.type;
+            data.key = item.bill_type;
+            data.value = item.amount;
+            result.push(data);
+        })
+        return result;
+    },
+    classification(data, type) {
+        let arr = data.filter(item => item.type === type);
         let amount = arr.reduce((sum, item) => {
             return sum += item.value;
         }, 0);
@@ -211,11 +233,11 @@ Page({
         });
         return arr;
     },
-    showStatis(e){
-        let key = e.currentTarget.dataset.key;
-        console.log(key)
+    showStatis(e) {
+        let bill_type = e.currentTarget.dataset.key;
+        let type = this.data.currentTab;
         wx.navigateTo({
-          url: '../statis/statis?key' + key,
+            url: '../statis/statis?type=' + type + '&bill_type=' + bill_type + '&date=' + this.data.date,
         })
     }
 })

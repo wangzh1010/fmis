@@ -1,18 +1,39 @@
-// pages/detail/detail.js
+const config = require('../../config/config.js');
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    cached: {
+      id: 0,
+      type: 0,
+      key: 0,
+      amount: 0,
+      date: '',
+      remarks: ''
+    }
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    wx.getStorage({
+      key: config.BILL_DETAIL,
+      success: res => {
+        console.log(res.data)
+        this.setData({
+          'cached.id': res.data.id,
+          'cached.key': res.data.key,
+          'cached.type': res.data.type,
+          'cached.date': res.data.date,
+          'cached.amount': res.data.value,
+          'cached.remarks': res.data.remarks
+        })
+        console.log(this.data.cached.key)
+      }
+    })
   },
 
   /**

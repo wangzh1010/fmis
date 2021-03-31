@@ -5,6 +5,7 @@ const {
 const {
   sendRequest
 } = require('./utils/util.js');
+const API = require('./config/api.js');
 App({
   onLaunch() {
     try {
@@ -36,7 +37,7 @@ App({
   wechatLogin(token) {
     if (token) {
       sendRequest({
-        url: '/fmis/login',
+        url: API.LOGIN,
         data: {
           token
         }
@@ -63,7 +64,7 @@ App({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
         sendRequest({
-          url: '/fmis/register',
+          url: API.REGISTER,
           data: {
             code: res.code
           }

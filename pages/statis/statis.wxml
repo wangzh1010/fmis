@@ -2,17 +2,17 @@
 <view class="container">
   <view class="card">
     <text>支出</text>
-    <text class="amount">7688.60</text>
+    <text class="amount">{{amount}}</text>
   </view>
   <view class="wrapper">
     <view class="details" wx:for="{{details}}" wx:key="index">
       <view class="summary">
         <text>{{item.date}}</text>
-        <text>共 {{item.value}}</text>
+        <text>共 {{Utils.formatMoney(item.total)}}</text>
       </view>
       <view class="row" wx:for="{{item.data}}" wx:key="index" bindtap="showDetail">
         <view class="img-wrap">
-          <image src="../../assets/canyin.png" mode="aspectFit" />
+          <image src="{{Utils.transformImageURL(item)}}" mode="aspectFit" />
         </view>
         <view class="wrap">
           <text>{{Utils.transformType(item)}}</text>

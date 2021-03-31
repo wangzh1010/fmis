@@ -1,5 +1,6 @@
 // index.js
-const config = require('../../config/config.js')
+const API = require('../../config/api.js');
+const config = require('../../config/config.js');
 const {
   formatTime,
   sendRequest
@@ -62,7 +63,7 @@ Page({
   fetchData() {
     sendRequest({
       method: 'POST',
-      url: '/fmis/statistics',
+      url: API.INDEX,
       data: {
         date: this.data.date
       }
@@ -90,9 +91,11 @@ Page({
     sourceData.forEach(item => {
       let key = item.createtime.match(/\d{4}\-\d{2}\-\d{2}/)[0];
       let data = Object.create(null);
+      data.id = item.id;
       data.type = item.type;
       data.key = item.bill_type;
       data.value = item.amount;
+      data.remarks = item.remarks;
       if (keys.includes(key)) {
         result.find(item => item.date === key).data.push(data);
       } else {
@@ -122,15 +125,29 @@ Page({
     this.setData({
       date: `${arr[0]}-${arr[1]}`
     });
+    this.fetchData();
   },
   addRecord() {
     wx.navigateTo({
       url: '../record/record',
     })
   },
-  showDetail() {
-    wx.navigateTo({
-      url: '../detail/detail',
+  showDetail(e) {
+    let id = e.currentTarget.dataset.id;
+    let idx = e.currentTarget.dataset.idx;
+    let date = this.data.details[idx].date;
+    let target = this.data.details[idx].data.find(item => item.id === id);
+    wx.setStorage({
+      data: {
+        date,
+        ...target
+      },
+      key: config.BILL_DETAIL,
+      complete() {
+        wx.navigateTo({
+          url: '../detail/detail'
+        })
+      }
     })
   }
 })

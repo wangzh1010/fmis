@@ -26,6 +26,10 @@ function transformType(item) {
   return '';
 }
 
+function formatMoney(val) {
+  return (val / 100).toFixed(2);
+}
+
 function sendRequest(options) {
   return new Promise((resolve, reject) => {
     let data = options.data;
@@ -77,6 +81,7 @@ function sendRequest(options) {
 
 module.exports = {
   formatTime,
+  formatMoney,
   sendRequest,
   transformType
 }

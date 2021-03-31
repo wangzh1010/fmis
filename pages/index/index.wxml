@@ -15,7 +15,7 @@
       </view>
     </view>
   </view>
-  <block wx:for="{{details}}" wx:key="index">
+  <block wx:for="{{details}}" wx:key="idx" wx:for-index="idx">
     <view class="details">
       <view class="summary">
         <view class="date">{{Utils.formatDate(item.date)}}</view>
@@ -25,15 +25,17 @@
           <view>结余：<text class="amount">{{Utils.calculate(item.data)}}</text></view>
         </view>
       </view>
-      <view class="row" wx:for="{{item.data}}" wx:key="index" bindtap="showDetail">
-        <view class="img-wrap"> 
-          <image src="{{Utils.transformImageURL(item)}}" mode="aspectFit" />
+      <block wx:for="{{item.data}}" wx:key="index">
+        <view class="row" data-idx="{{idx}}" data-id="{{item.id}}" bindtap="showDetail">
+          <view class="img-wrap">
+            <image src="{{Utils.transformImageURL(item)}}" mode="aspectFit" />
+          </view>
+          <view class="wrap">
+            <text>{{Utils.transformType(item)}}</text>
+            <text>{{Utils.formatMoney(item)}}</text>
+          </view>
         </view>
-        <view class="wrap">
-          <text>{{Utils.transformType(item)}}</text>
-          <text>{{Utils.formatMoney(item)}}</text>
-        </view>
-      </view>
+      </block>
     </view>
   </block>
   <view class="add" bindtap="addRecord">

@@ -96,6 +96,7 @@ module.exports = {
     IN: 0,
     OUT: 1,
     ACCESS_TOKEN: 'fmis.access.token',
+    BILL_DETAIL: 'fmis.bill.detail',
     SERVER: 'http://127.0.0.1:3000',
     RETRY_TIMES: 2,
     RETRY_DELAY: 300
