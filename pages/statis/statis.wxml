@@ -1,7 +1,7 @@
 <wxs src="../../wxs/utils.wxs" module="Utils"></wxs>
 <view class="container">
   <view class="card">
-    <text>支出</text>
+    <text>{{type}}</text>
     <text class="amount">{{amount}}</text>
   </view>
   <view class="wrapper">

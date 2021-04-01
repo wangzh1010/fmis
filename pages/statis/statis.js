@@ -1,4 +1,5 @@
 const API = require('../../config/api.js');
+const config = require('../../config/config.js');
 const Utils = require('../../utils/util.js');
 Page({
 
@@ -36,6 +37,7 @@ Page({
         value: 90501
       }]
     }],
+    type: '',
     amount: ''
   },
 
@@ -54,7 +56,8 @@ Page({
       let [amount, result] = this.formatData(resp.data);
       this.setData({
         details: result,
-        amount: Utils.formatMoney(amount)
+        amount: Utils.formatMoney(amount),
+        type: options.type === config.IN ? '收入' : '支出',
       });
     })
   },
