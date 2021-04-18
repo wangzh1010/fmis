@@ -79,7 +79,14 @@ Page({
             date: `${arr[0]}-${arr[1]}`
         });
     },
-    addRecord() {
-
+    showClassify() {
+        wx.navigateTo({
+          url: '../classify/classify'
+        })
+    },
+    showApply() {
+        wx.navigateTo({
+          url: '../apply/apply'
+        })
     }
 })

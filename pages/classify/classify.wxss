@@ -1,0 +1,96 @@
+.card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 94%;
+  height: 120rpx;
+  color: #333;
+  border-radius: 10rpx;
+  background: linear-gradient(90deg, #64b5f6, #1296db);
+}
+
+.card>.switch {
+  display: flex;
+  flex-direction: row;
+  height: 64rpx;
+  line-height: 64rpx;
+  border: 1px solid #333;
+  border-radius: 6rpx;
+}
+
+.card>.switch>.tab {
+  width: 120rpx;
+  height: 64rpx;
+  text-align: center;
+}
+
+.card>.switch>.active {
+  color: #fff;
+  background-color: #333;
+}
+
+.custom-categories {
+  display: flex;
+  flex-direction: column;
+  width: 94%;
+  margin-top: 24rpx;
+}
+
+.custom-categories .category {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 97%;
+  padding-left: 3%;
+  height: 96rpx;
+}
+
+.custom-categories .category:not(:last-child) {
+  border-bottom: 2rpx solid #f3f3f3;
+}
+
+.custom-categories .category>.wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+}
+
+.custom-categories .category>.wrap>image {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 12rpx;
+}
+
+.custom-categories .category .remove-btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 90rpx;
+  width: 96rpx;
+}
+
+.custom-categories .category .remove-btn>image {
+  width: 20rpx;
+  height: 20rpx;
+  padding: 8rpx 8rpx;
+  border-radius: 100%;
+  background-color: #e60000;
+}
+
+.container>.btn {
+  position: fixed;
+  bottom: 0;
+  color: #ffffff;
+  background-color: #1296db;
+  width: 80%;
+  height: 96rpx;
+  text-align: center;
+  line-height: 96rpx;
+  border-radius: 6rpx;
+  margin: 36rpx auto;
+}

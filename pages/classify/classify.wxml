@@ -1,0 +1,23 @@
+<wxs src="../../wxs/config.wxs" module="Config"></wxs>
+<wxs src="../../wxs/utils.wxs" module="Utils"></wxs>
+<view class="container">
+  <view class="card">
+    <view class="switch">
+      <text data-type="{{Config.OUT}}" class="tab {{currentTab === Config.OUT ? 'active' : ''}}"
+        bindtap="handleTabChange">支出</text>
+      <text data-type="{{Config.IN}}" class="tab {{currentTab === Config.IN ? 'active' : ''}}"
+        bindtap="handleTabChange">收入</text>
+    </view>
+  </view>
+  <view class="custom-categories">
+    <view class="category" wx:for="{{categories}}" wx:key="index" data-icon="{{item.icon}}" data-name="{{item.name}}" bindtap="modifyClassify">
+      <view class="wrap">
+        <image src="../../assets/{{item.icon}}_on.png" mode="aspectFit" />{{item.name}}
+      </view>
+      <view class="remove-btn" data-name="{{item.name}}" catchtap="removeClassify">
+        <image src="../../assets/close.png" mode="aspectFit" />
+      </view>      
+    </view>
+  </view>
+  <view class="btn" bindtap="addClassify">增加</view>
+</view>

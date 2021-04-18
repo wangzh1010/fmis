@@ -19,29 +19,31 @@ Page({
     start: `${year - 5}-01-01`,
     end: `${year + 5}-01-01`,
     details: [{
-      date: '2021-03-24',
+      date: '2021-04-18',
+      data: [{
+        type: 1,
+        key: 1,
+        value: 2381
+      },{
+        type: 0,
+        key: 2,
+        value: 2135
+      }]
+    }, {
+      date: '2021-04-15',
       data: [{
           type: 0,
           key: 1,
-          value: 9950
-        },
-        {
-          type: 1,
-          key: 1,
-          value: 10034
-        }
-      ]
-    }, {
-      date: '2021-03-20',
-      data: [{
+          value: 300000
+        }, {
           type: 0,
           key: 3,
-          value: 1752389
+          value: 28781
         },
         {
           type: 1,
           key: 1,
-          value: 10034
+          value: 15600
         }
       ]
     }],
@@ -52,13 +54,27 @@ Page({
   onLoad() {
     if (app.globalData.accessToken) {
       // 请求数据
-      this.fetchData();
+      // this.fetchData();      
     } else {
       app.accessTokenReadyCallback = token => {
         // 请求数据
-        this.fetchData();
+        // this.fetchData();
       }
     }
+    let items = [0, 0, 0];
+    this.data.details.forEach(item => {
+      let arr = item.data;
+      items[0] += this.calculate(arr, config.IN);
+      items[1] += this.calculate(arr, config.OUT);
+      items[2] += this.calculate(arr);
+    });
+    console.log(111)
+    items = items.map(num => (num / 100).toFixed(2));
+    this.setData({
+      incoming: items[0],
+      outgoings: items[1],
+      surplus: items[2]
+    })
   },
   fetchData() {
     sendRequest({

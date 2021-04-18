@@ -10,9 +10,9 @@ App({
   onLaunch() {
     try {
       let token = wx.getStorageSync(ACCESS_TOKEN);
-      this.wechatLogin(token);
+      // this.wechatLogin(token);
     } catch (error) {
-      this.wechatLogin();
+      // this.wechatLogin();
     }
   },
   onShow() {

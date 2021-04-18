@@ -8,43 +8,82 @@ Page({
    */
   data: {
     details: [{
-      date: '2021-03-28',
+      date: '2021-04-18',
       data: [{
-        type: 1,
-        key: 4,
+        type: 0,
+        key: 2,
         value: 19950
       }]
     }, {
-      date: '2021-03-27',
+      date: '2021-04-15',
       data: [{
-        type: 1,
-        key: 1,
+        type: 0,
+        key: 2,
         value: 950
       }, {
-        type: 1,
-        key: 1,
+        type: 0,
+        key: 2,
         value: 99502
       }]
     }, {
-      date: '2021-03-26',
+      date: '2021-04-12',
       data: [{
-        type: 1,
+        type: 0,
         key: 2,
         value: 99510
       }, {
-        type: 1,
-        key: 1,
+        type: 0,
+        key: 2,
         value: 90501
       }]
     }],
-    type: '',
-    amount: ''
+    list: [{
+      type: 0,
+      bill_type: 2,
+      amount: 2134,
+      createtime: '2021-04-18'
+    }, {
+      type: 0,
+      bill_type: 2,
+      amount: 10,
+      createtime: '2021-04-15'
+    }, {
+      type: 0,
+      bill_type: 2,
+      amount: 10000,
+      createtime: '2021-04-15'
+    }, {
+      type: 0,
+      bill_type: 2,
+      amount: 5900,
+      createtime: '2021-04-12'
+    }, {
+      type: 0,
+      bill_type: 2,
+      amount: 5200,
+      createtime: '2021-04-12'
+    }, {
+      type: 0,
+      bill_type: 2,
+      amount: 29900,
+      createtime: '2021-04-12'
+    }],
+    type: '收入',
+    amount: '531.44'
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options)
+    let [amount, result] = this.formatData(this.data.list);
+    this.setData({
+      details: result,
+      amount: Utils.formatMoney(amount),
+      type: parseInt(options.type) === config.IN ? '收入' : '支出',
+    });
+    return;
     Utils.sendRequest({
       url: API.DETAILS,
       data: {

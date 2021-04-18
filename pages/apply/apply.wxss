@@ -1,0 +1,32 @@
+.container {
+  height: 100vh;
+  align-items: flex-start;
+  background-color: #f3f3f3;
+}
+
+.container>text {
+  height: 96rpx;
+  line-height: 96rpx;
+  padding: 0 3%;
+}
+
+.container>input {
+  border-top: 2rpx solid #eeeeee;
+  border-bottom: 2rpx solid #eeeeee;
+  padding: 0 3%;
+  width: 94%;
+  height: 96rpx;
+  color: #333333;
+  background-color: #ffffff;
+}
+
+.container>.apply-btn {
+  color: #ffffff;
+  background-color: #1296db;
+  width: 80%;
+  height: 96rpx;
+  text-align: center;
+  line-height: 96rpx;
+  border-radius: 6rpx;
+  margin: 36rpx auto;
+}

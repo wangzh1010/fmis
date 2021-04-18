@@ -18,13 +18,54 @@ Page({
         surplus: 0,
         incoming: 0,
         outgoing: 0,
-        results: []
+        results: [],
+        list: [{
+            type: 0,
+            mont: '2021-04',
+            amount: 330916
+        }, {
+            type: 1,
+            mont: '2021-04',
+            amount: 17981
+        }, {
+            type: 0,
+            mont: '2021-03',
+            amount: 403597
+        }, {
+            type: 1,
+            mont: '2021-03',
+            amount: 632716
+        }, {
+            type: 1,
+            mont: '2021-02',
+            amount: 153931
+        }, {
+            type: 0,
+            mont: '2021-02',
+            amount: 397812
+        }, {
+            type: 0,
+            mont: '2021-01',
+            amount: 378712
+        }, {
+            type: 1,
+            mont: '2021-01',
+            amount: 107893
+        }]
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        let data = this.formatData(this.data.list);
+        this.setData({
+            results: data.results,
+            surplus: data.surplus,
+            incoming: data.incoming,
+            outgoing: data.outgoing
+        })
+        return;
         sendRequest({
             url: API.BILL,
             data: {

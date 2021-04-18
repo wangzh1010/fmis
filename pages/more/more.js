@@ -5,6 +5,7 @@ const {
 } = require('../../utils/util.js');
 const date = formatTime(new Date());
 const year = parseInt(date.match(/^\d{4}/)[0]);
+const month = parseInt(date.match(/^\d{4}-(\d{2})/)[1]);
 const yearMonth = date.match(/^\d{4}\-\d{2}/)[0];
 const config = require('../../config/config.js');
 const API = require('../../config/api.js');
@@ -19,6 +20,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+        month: month,
         date: yearMonth,
         start: `${year - 5}-01-01`,
         end: `${year + 5}-01-01`,
@@ -28,19 +30,15 @@ Page({
         details: [{
             type: 0,
             key: 1,
-            value: 9900
+            value: 300000
         }, {
             type: 0,
             key: 2,
-            value: 1987
+            value: 53144
         }, {
             type: 0,
             key: 3,
-            value: 19990
-        }, {
-            type: 0,
-            key: 4,
-            value: 9922
+            value: 28781
         }, {
             type: 1,
             key: 1,
@@ -74,6 +72,11 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        incoming = this.classification(this.data.details, config.IN);
+        outgoings = this.classification(this.data.details, config.OUT);
+        this.refreshData();
+        this.refreshPieChart();
+        return;
         sendRequest({
             method: 'POST',
             url: API.MORE,

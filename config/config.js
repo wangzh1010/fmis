@@ -93,6 +93,15 @@ module.exports = {
         pinyin: 'qita',
         value: '其他'
     }],
+    custom: [{
+        key: 101,
+        value: '',
+        pinyin: 'setting'
+    }, {
+        key: 102,
+        value: '',
+        pinyin: 'pen'
+    }],
     IN: 0,
     OUT: 1,
     ACCESS_TOKEN: 'fmis.access.token',

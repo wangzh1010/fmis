@@ -14,13 +14,33 @@
         <text class="desc">使用天数</text>
       </view>
       <view class="item">
-        <text class="day">2</text>
+        <text class="day">3</text>
         <text class="desc">总记账天数</text>
       </view>
       <view class="item">
         <text class="day">14</text>
         <text class="desc">总记账笔数</text>
       </view>
+    </view>
+  </view>
+  <view class="tabs">
+    <view class="tab" bindtap="showClassify">
+      <view class="wrap">
+        <image src="../../assets/custom_on.png" mode="aspectFit" />管理分类
+      </view>
+      <image src="../../assets/arrow_right_black.png" mode="aspectFit" />
+    </view>
+    <view class="tab" bindtap="showApply">
+      <view class="wrap">
+        <image src="../../assets/export_on.png" mode="aspectFit" />数据导出
+      </view>
+      <image src="../../assets/arrow_right_black.png" mode="aspectFit" />
+    </view>
+    <view class="tab">
+      <view class="wrap">
+        <image src="../../assets/about_on.png" mode="aspectFit" />关于我们
+      </view>
+      <image src="../../assets/arrow_right_black.png" mode="aspectFit" />
     </view>
   </view>
 </view>

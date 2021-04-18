@@ -58,3 +58,43 @@
 .usage-record .desc {
   font-size: 24rpx;
 }
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+  width: 94%;
+  margin-top: 24rpx;
+}
+
+.tabs .tab {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 97%;
+  padding-left: 3%;
+  height: 96rpx;
+}
+
+.tabs .tab:not(:last-child) {
+  border-bottom: 2rpx solid #f3f3f3;
+}
+
+.tabs .tab>.wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+}
+
+.tabs .tab>.wrap>image {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 12rpx;
+}
+
+.tabs .tab>image {
+  width: 28rpx;
+  height: 28rpx;
+}

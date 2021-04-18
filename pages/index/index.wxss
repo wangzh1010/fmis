@@ -121,8 +121,8 @@
 }
 
 .add {
-  width: 100rpx;
-  height: 100rpx;
+  width: 90rpx;
+  height: 90rpx;
   display: flex;
   justify-content: center;
   align-items: center;

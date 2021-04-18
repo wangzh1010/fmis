@@ -1,0 +1,30 @@
+<view class="container">
+  <sidebar open="{{open}}">
+    <view class="categories">
+      <view class="item" wx:for="{{list}}" wx:key="index">
+        <view data-key="{{item.key}}" class="img-wrap" bindtap="handleCategorySelected">
+          <image src="../../assets/{{item.pinyin}}.png" mode="aspectFit" />
+        </view>
+        <text>{{item.value}}</text>
+      </view>
+    </view>
+  </sidebar>
+  <view class="row">
+    <text>分类名称：</text>
+    <input type="text" placeholder="请输入分类名称" value="{{categoryName}}" bindinput="handleCategoryNameChange" />
+  </view>
+  <view class="row">
+    <text>收支类型：</text>
+    <text>{{tabName}}</text>
+  </view>
+  <view class="row">
+    <text>分类图标：</text>
+    <view class="content " bindtap="showPopup">
+      <block wx:if="{{icon}}">
+        <image class="icon" src="../../assets/{{icon}}_on.png" mode="aspectFit" />
+      </block>
+      <text wx:else>请选择</text>
+    </view>
+  </view>
+  <view class="btn">保存</view>
+</view>

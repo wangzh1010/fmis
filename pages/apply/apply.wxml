@@ -1,0 +1,6 @@
+<view class="container">
+  <text>导出文件到：</text>
+  <input type="text" placeholder="请输入收件邮箱地址"/>
+  <view class="apply-btn" bindtap="applyExportData">确定</view>
+</view>
+
