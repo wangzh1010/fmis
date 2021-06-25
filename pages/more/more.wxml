@@ -16,7 +16,8 @@
         </view>
     </view>
     <view class="canvas-wrap">
-        <canvas canvas-id="pieCanvas"></canvas>
+        <canvas wx:if="{{list.length > 0}}" canvas-id="pieCanvas"></canvas>
+        <view class="no-results" wx:else>您这个月还没有{{currentTab === Config.IN ? '收入' : '支出'}}信息，快去添加吧！</view>
     </view>
     <view class="details">
         <view class="caption">{{month}}月{{currentTab === Config.IN ? '收入' : '支出'}}排行榜</view>

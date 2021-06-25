@@ -54,11 +54,11 @@ Page({
   onLoad() {
     if (app.globalData.accessToken) {
       // 请求数据
-      // this.fetchData();      
+      this.fetchData();      
     } else {
       app.accessTokenReadyCallback = token => {
         // 请求数据
-        // this.fetchData();
+        this.fetchData();
       }
     }
     let items = [0, 0, 0];

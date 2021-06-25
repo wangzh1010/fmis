@@ -64,8 +64,7 @@ Page({
             surplus: data.surplus,
             incoming: data.incoming,
             outgoing: data.outgoing
-        })
-        return;
+        });
         sendRequest({
             url: API.BILL,
             data: {

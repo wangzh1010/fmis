@@ -83,7 +83,6 @@ Page({
       amount: Utils.formatMoney(amount),
       type: parseInt(options.type) === config.IN ? '收入' : '支出',
     });
-    return;
     Utils.sendRequest({
       url: API.DETAILS,
       data: {

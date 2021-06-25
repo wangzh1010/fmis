@@ -76,20 +76,7 @@ Page({
         outgoings = this.classification(this.data.details, config.OUT);
         this.refreshData();
         this.refreshPieChart();
-        return;
-        sendRequest({
-            method: 'POST',
-            url: API.MORE,
-            data: {
-                date: this.data.date
-            }
-        }).then(resp => {
-            let data = this.formatData(resp.data);
-            incoming = this.classification(data, config.IN);
-            outgoings = this.classification(data, config.OUT);
-            this.refreshData();
-            this.refreshPieChart();
-        });
+        this.fetchData();
     },
 
     /**
@@ -140,10 +127,29 @@ Page({
     onShareAppMessage: function () {
 
     },
+    fetchData() {
+        sendRequest({
+            method: 'POST',
+            url: API.MORE,
+            data: {
+                date: this.data.date
+            }
+        }).then(resp => {
+            console.log(resp);
+            if (resp.code === 200) {
+                let data = this.formatData(resp.data);
+                incoming = this.classification(data, config.IN);
+                outgoings = this.classification(data, config.OUT);
+                this.refreshData();
+                this.refreshPieChart();
+            }
+        });
+    },
     handleDateChange(e) {
         this.setData({
             date: e.detail.value
-        })
+        });
+        this.fetchData();
     },
     handleTabChange(e) {
         this.setData({
@@ -160,9 +166,13 @@ Page({
     refreshPieChart() {
         let name = (this.data.total[this.data.currentTab] / 100).toFixed(2);
         let subname = this.data.currentTab === config.OUT ? '支出' : '收入';
+        let series = this.formatSeries();
+        if (!series.length) {
+            return;
+        }
         if (pieChart) {
             pieChart.updateData({
-                series: this.formatSeries(),
+                series: series,
                 title: {
                     name: name
                 },
@@ -192,7 +202,7 @@ Page({
                 color: '#666666',
                 fontSize: 16
             },
-            series: this.formatSeries(),
+            series: series,
             width: this.data.width,
             height: this.data.height,
             dataLabel: true,
@@ -230,7 +240,8 @@ Page({
         }, 0);
         arr.forEach(item => {
             item.rate = (item.value / amount * 100).toFixed(2);
-        })
+        });
+        console.log(amount);
         this.setData({
             ['total[' + type + ']']: amount
         });
