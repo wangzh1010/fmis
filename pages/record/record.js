@@ -1,17 +1,22 @@
-const config = require('../../config/config.js');
+const API = require('../../config/api.js');
+const Config = require('../../config/config.js');
 const {
-    formatTime
+    formatTime,
+    sendRequest
 } = require('../../utils/util.js');
 const date = formatTime(new Date());
 let year = parseInt(date.match(/^\d{4}/)[0]);
 let day = date.match(/^\d{4}\-\d{2}\-\d{2}/)[0];
+let reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-        currentTab: config.OUT,
+        id: '',
+        type: '',
+        currentTab: '',
         list: [],
         open: false,
         key: -1,
@@ -21,14 +26,36 @@ Page({
         money: '',
         remarks: '',
         start: `${year - 5}-01-01`,
-        end: `${year + 5}-01-01`,
+        end: `${year + 5}-01-01`
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        this.refreshCategories();
+        // 缓存数据
+        let data = {
+            id: 0,
+            type: Config.OUT
+        };
+        // 当前页面是新增还是修改标识
+        let type = options.type;
+        // 修改
+        if (type === Config.ACT_MODIFY) {
+            // 获取缓存数据
+            try {
+                data = wx.getStorageSync(Config.BILL_MODIFY);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        // 设置当前页面类型标识
+        this.setData({
+            id: data.id,
+            type: type
+        });
+        // 刷新数据
+        this.refreshCategories(data);
     },
 
     /**
@@ -56,7 +83,11 @@ Page({
      * 生命周期函数--监听页面卸载
      */
     onUnload: function () {
-
+        try {
+            wx.removeStorageSync(Config.BILL_MODIFY);
+        } catch (e) {
+            console.error(e);
+        }
     },
 
     /**
@@ -80,22 +111,24 @@ Page({
 
     },
     handleTabChange(e) {
-        this.setData({
-            currentTab: e.target.dataset.type
-        });
-        this.refreshCategories();
+        let type = e.target.dataset.type;
+        if (this.data.currentTab !== type) {
+            this.refreshCategories({
+                type: type
+            });
+        }
     },
-    refreshCategories() {
-        let list = this.data.currentTab === config.IN ? config.incoming : config.outgoings;
+    refreshCategories(data) {
         this.setData({
-            list,
-            key: -1,
-            value: '请选择',
-            icon: '',
-            money: '',
-            remarks: '',
-            day: day
-        })
+            currentTab: data.type,
+            list: data.type === Config.IN ? Config.incoming : Config.outgoings,
+            key: data.key || -1,
+            value: data.category || '请选择',
+            icon: data.icon || '',
+            money: data.amount || '',
+            remarks: data.remarks || '',
+            day: data.date || day
+        });
     },
     showPopup() {
         this.setData({
@@ -106,13 +139,13 @@ Page({
         this.setData({
             open: false
         });
-        let key = this.data.currentTab === config.IN ? 'incoming' : 'outgoings';
-        let target = config[key].find(item => item.key === e.currentTarget.dataset.key);
+        let key = this.data.currentTab === Config.IN ? 'incoming' : 'outgoings';
+        let target = Config[key].find(item => item.key === e.currentTarget.dataset.key);
         this.setData({
             key: target.key,
             value: target.value,
-            icon: target.pinyin
-        })
+            icon: '../../assets/' + target.pinyin + '_on.png'
+        });
     },
     handleDateChange(e) {
         this.setData({
@@ -130,9 +163,122 @@ Page({
         })
     },
     handleSaveBtnClick() {
-        console.log(this.data.day)
-        console.log(this.data.key)
-        console.log(this.data.money)
-        console.log(this.data.remarks)
+        if (this.data.key === -1) {
+            wx.showToast({
+                title: '请选择分类',
+                icon: 'none'
+            });
+            return;
+        }
+        if (this.data.money === '') {
+            wx.showToast({
+                title: '请输入金额',
+                icon: 'none'
+            });
+            return;
+        }
+        if (!reg.test(this.data.money)) {
+            wx.showToast({
+                title: '请输入正确的金额',
+                icon: 'none'
+            });
+            return;
+        }
+        if (this.data.money > 9999999) {
+            wx.showToast({
+                title: '超出金额范围',
+                icon: 'none'
+            });
+            return;
+        }
+        if (this.data.type === Config.ACT_ADD) {
+            this.addBill();
+        } else if (this.data.type === Config.ACT_MODIFY) {
+            this.modifyBill();
+        } else {
+            wx.showToast({
+                title: '系统异常，请稍后重试！',
+                icon: 'none'
+            });
+        }
+    },
+    addBill() {
+        sendRequest({
+            method: 'POST',
+            url: API.ADD,
+            data: {
+                type: this.data.currentTab,
+                date: this.data.day,
+                key: this.data.key,
+                amount: this.data.money,
+                remarks: this.data.remarks
+            }
+        }).then(resp => {
+            console.log(resp);
+            try {
+                wx.setStorageSync(Config.RELOAD_INDEX, 1);
+            } catch (e) {
+                console.error(e);
+            }
+            wx.showToast({
+                title: resp.message,
+                icon: 'none',
+                success() {
+                    setTimeout(() => {
+                        wx.navigateBack();
+                    }, 300);
+                }
+            });
+        }).catch(e => {
+            wx.showToast({
+                title: '服务器繁忙，请稍后重试！',
+                icon: 'none'
+            })
+        })
+    },
+    modifyBill() {
+        let data = {
+            id: this.data.id,
+            date: this.data.day,
+            key: this.data.key,
+            amount: this.data.money,
+            remarks: this.data.remarks
+        };
+        sendRequest({
+            method: 'POST',
+            url: API.UPDATE,
+            data: data
+        }).then(resp => {
+            console.log(resp);
+            // 详情页 数据刷新
+            try {
+                wx.setStorageSync(Config.REFRESH_DETAIL, JSON.stringify(data));
+            } catch (e) {
+                console.error(e);
+            }
+            // 首页数据刷新
+            try {
+                wx.setStorageSync(Config.REFRESH_INDEX, JSON.stringify({
+                    ...data,
+                    cmd: Config.BILL_UPDATE
+                }));
+            } catch (e) {
+                console.error(e);
+            }
+            wx.showToast({
+                title: resp.message,
+                icon: 'none',
+                success() {
+                    setTimeout(() => {
+                        wx.navigateBack();
+                    }, 300);
+                }
+            });
+        }).catch(e => {
+            wx.showToast({
+                title: '服务器繁忙，请稍后重试！',
+                icon: 'none'
+            })
+        })
     }
 })

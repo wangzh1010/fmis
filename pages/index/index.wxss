@@ -55,22 +55,26 @@
 
 .details>.summary {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   padding: 20rpx 20rpx;
   font-size: 24rpx;
   margin-bottom: 16rpx;
   border-bottom: 1rpx solid #eeeeee;
 }
 
+.details>.summary>.date {
+  font-size: 26rpx;
+  margin-bottom: 8rpx;
+}
+
 .details>.summary>.wrap {
   display: flex;
   flex-direction: row;
-}
-
-.details>.summary>.wrap>view {
-  margin-left: 20rpx;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .details>.row {

@@ -30,6 +30,10 @@
     background-color: #333;
 }
 
+.card>.label {
+    color: #fff;
+}
+
 .categories {
     display: flex;
     flex-direction: row;

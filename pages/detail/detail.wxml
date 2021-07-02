@@ -1,20 +1,18 @@
-<wxs src="../../wxs/utils.wxs" module="Utils"></wxs>
-<wxs src="../../wxs/config.wxs" module="Config"></wxs>
 <view class="container">
   <view class="card">
     <view class="img-wrap">
-      <image src="{{Utils.transformImageURL(cached)}}" mode="aspectFit" />
+      <image src="{{cached.icon}}" mode="aspectFit" />
     </view>
-    <text>{{Utils.transformType(cached)}}</text>
+    <text>{{cached.category}}</text>
   </view>
   <view class="details">
     <view class="row">
       <text class="title">类型</text>
-      <text>{{cached.type === Config.IN ? '收入' : '支出'}}</text>
+      <text>{{cached.name}}</text>
     </view>
     <view class="row">
       <text class="title">金额</text>
-      <text>{{Utils.formatMoney(cached.amount)}}</text>
+      <text>{{cached.amount}}</text>
     </view>
     <view class="row">
       <text class="title">日期</text>

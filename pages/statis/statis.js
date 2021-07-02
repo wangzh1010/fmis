@@ -1,5 +1,5 @@
 const API = require('../../config/api.js');
-const config = require('../../config/config.js');
+const Config = require('../../config/config.js');
 const Utils = require('../../utils/util.js');
 Page({
 
@@ -41,32 +41,32 @@ Page({
       type: 0,
       bill_type: 2,
       amount: 2134,
-      createtime: '2021-04-18'
+      bill_date: '2021-04-18'
     }, {
       type: 0,
       bill_type: 2,
       amount: 10,
-      createtime: '2021-04-15'
+      bill_date: '2021-04-15'
     }, {
       type: 0,
       bill_type: 2,
       amount: 10000,
-      createtime: '2021-04-15'
+      bill_date: '2021-04-15'
     }, {
       type: 0,
       bill_type: 2,
       amount: 5900,
-      createtime: '2021-04-12'
+      bill_date: '2021-04-12'
     }, {
       type: 0,
       bill_type: 2,
       amount: 5200,
-      createtime: '2021-04-12'
+      bill_date: '2021-04-12'
     }, {
       type: 0,
       bill_type: 2,
       amount: 29900,
-      createtime: '2021-04-12'
+      bill_date: '2021-04-12'
     }],
     type: '收入',
     amount: '531.44'
@@ -76,12 +76,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options)
     let [amount, result] = this.formatData(this.data.list);
     this.setData({
       details: result,
       amount: Utils.formatMoney(amount),
-      type: parseInt(options.type) === config.IN ? '收入' : '支出',
+      type: parseInt(options.type) === Config.IN ? '收入' : '支出',
     });
     Utils.sendRequest({
       url: API.DETAILS,
@@ -95,7 +94,7 @@ Page({
       this.setData({
         details: result,
         amount: Utils.formatMoney(amount),
-        type: options.type === config.IN ? '收入' : '支出',
+        type: options.type === Config.IN ? '收入' : '支出',
       });
     })
   },
@@ -153,7 +152,7 @@ Page({
     let keys = [];
     let amount = 0;
     sourceData.forEach(item => {
-      let key = item.createtime.match(/\d{4}\-\d{2}\-\d{2}/)[0];
+      let key = item.bill_date;
       let data = Object.create(null);
       data.type = item.type;
       data.key = item.bill_type;

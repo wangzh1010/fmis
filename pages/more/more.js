@@ -7,7 +7,7 @@ const date = formatTime(new Date());
 const year = parseInt(date.match(/^\d{4}/)[0]);
 const month = parseInt(date.match(/^\d{4}-(\d{2})/)[1]);
 const yearMonth = date.match(/^\d{4}\-\d{2}/)[0];
-const config = require('../../config/config.js');
+const Config = require('../../config/config.js');
 const API = require('../../config/api.js');
 const Utils = require('../../utils/util.js');
 const WxCharts = require('../../lib/wxcharts-min.js');
@@ -24,7 +24,7 @@ Page({
         date: yearMonth,
         start: `${year - 5}-01-01`,
         end: `${year + 5}-01-01`,
-        currentTab: config.OUT,
+        currentTab: Config.OUT,
         width: 320,
         height: 320,
         details: [{
@@ -72,8 +72,8 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        incoming = this.classification(this.data.details, config.IN);
-        outgoings = this.classification(this.data.details, config.OUT);
+        incoming = this.classification(this.data.details, Config.IN);
+        outgoings = this.classification(this.data.details, Config.OUT);
         this.refreshData();
         this.refreshPieChart();
         this.fetchData();
@@ -135,37 +135,49 @@ Page({
                 date: this.data.date
             }
         }).then(resp => {
-            console.log(resp);
             if (resp.code === 200) {
                 let data = this.formatData(resp.data);
-                incoming = this.classification(data, config.IN);
-                outgoings = this.classification(data, config.OUT);
+                incoming = this.classification(data, Config.IN);
+                outgoings = this.classification(data, Config.OUT);
                 this.refreshData();
                 this.refreshPieChart();
             }
+        }).catch(e => {
+            wx.showToast({
+                title: '网络繁忙，请稍后重试！',
+                icon: 'none'
+            });
         });
     },
     handleDateChange(e) {
-        this.setData({
-            date: e.detail.value
-        });
-        this.fetchData();
+        let date = e.detail.value;
+        if (this.data.date !== date) {
+            let month = date.match(/\d{4}-(\d{2})/)[1];
+            this.setData({
+                month: parseInt(month),
+                date: date
+            });
+            this.fetchData();
+        }
     },
     handleTabChange(e) {
-        this.setData({
-            currentTab: e.target.dataset.type
-        });
-        this.refreshData();
-        this.refreshPieChart();
+        let type = e.target.dataset.type;
+        if (this.data.currentTab !== type) {
+            this.setData({
+                currentTab: e.target.dataset.type
+            });
+            this.refreshData();
+            this.refreshPieChart();
+        }
     },
     refreshData() {
         this.setData({
-            list: this.data.currentTab === config.OUT ? outgoings : incoming
+            list: this.data.currentTab === Config.OUT ? outgoings : incoming
         })
     },
     refreshPieChart() {
         let name = (this.data.total[this.data.currentTab] / 100).toFixed(2);
-        let subname = this.data.currentTab === config.OUT ? '支出' : '收入';
+        let subname = this.data.currentTab === Config.OUT ? '支出' : '收入';
         let series = this.formatSeries();
         if (!series.length) {
             return;
@@ -213,7 +225,7 @@ Page({
     },
     formatSeries() {
         let series = [];
-        let data = this.data.currentTab === config.OUT ? outgoings : incoming;
+        let data = this.data.currentTab === Config.OUT ? outgoings : incoming;
         data.forEach(item => {
             series.push({
                 name: Utils.transformType(item),
@@ -241,7 +253,6 @@ Page({
         arr.forEach(item => {
             item.rate = (item.value / amount * 100).toFixed(2);
         });
-        console.log(amount);
         this.setData({
             ['total[' + type + ']']: amount
         });

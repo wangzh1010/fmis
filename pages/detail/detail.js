@@ -1,4 +1,6 @@
-const config = require('../../config/config.js');
+const Config = require('../../config/config.js');
+const Utils = require('../../utils/util.js');
+const API = require('../../config/api.js');
 Page({
 
   /**
@@ -11,7 +13,10 @@ Page({
       key: 0,
       amount: 0,
       date: '',
-      remarks: ''
+      remarks: '',
+      icon: '',
+      category: '',
+      name: ''
     }
   },
 
@@ -20,20 +25,21 @@ Page({
    */
   onLoad: function (options) {
     wx.getStorage({
-      key: config.BILL_DETAIL,
+      key: Config.BILL_DETAIL,
       success: res => {
-        console.log(res.data)
         this.setData({
           'cached.id': res.data.id,
           'cached.key': res.data.key,
           'cached.type': res.data.type,
           'cached.date': res.data.date,
-          'cached.amount': res.data.value,
-          'cached.remarks': res.data.remarks
-        })
-        console.log(this.data.cached.key)
+          'cached.remarks': res.data.remarks,
+          'cached.category': Utils.transformType(res.data),
+          'cached.amount': Utils.formatMoney(res.data.value),
+          'cached.icon': Utils.transformImageURL(res.data, 'on'),
+          'cached.name': res.data.type === Config.IN ? '收入' : '支出'
+        });
       }
-    })
+    });
   },
 
   /**
@@ -47,7 +53,24 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    console.log('detail onShow.')
+    try {
+      let data = wx.getStorageSync(Config.REFRESH_DETAIL);
+      if (data) {
+        data = JSON.parse(data);
+        this.setData({
+          'cached.key': data.key,
+          'cached.date': data.date,
+          'cached.remarks': data.remarks,
+          'cached.category': Utils.transformType(data),
+          'cached.amount': Utils.formatMoney(data.amount * 100),
+          'cached.icon': Utils.transformImageURL(data, 'on')
+        });
+        wx.removeStorageSync(Config.REFRESH_DETAIL);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   },
 
   /**
@@ -85,8 +108,21 @@ Page({
 
   },
   handleEdit() {
-    wx.navigateTo({
-      url: '../record/record',
+    let type;
+    wx.setStorage({
+      data: this.data.cached,
+      key: Config.BILL_MODIFY,
+      success() {
+        type = Config.ACT_MODIFY;
+      },
+      fail() {
+        type = Config.ACT_ADD;
+      },
+      complete() {
+        wx.navigateTo({
+          url: '../record/record?type=' + type,
+        })
+      }
     })
   },
   handleDelete() {
@@ -95,9 +131,34 @@ Page({
       content: '确定要删除这条账单?',
       success: res => {
         if (res.confirm) {
-          console.log('delete!')
-          wx.navigateBack({
-            delta: 0,
+          Utils.sendRequest({
+            url: API.DELETE,
+            data: {
+              bid: this.data.cached.id
+            }
+          }).then(resp => {
+            try {
+              wx.setStorageSync(Config.REFRESH_INDEX, JSON.stringify({
+                cmd: Config.BILL_DELETE,
+                id: this.data.cached.id
+              }));
+            } catch (e) {
+              console.error(e);
+            }
+            wx.showToast({
+              title: resp.message,
+              icon: 'none',
+              success() {
+                setTimeout(() => {
+                  wx.navigateBack();
+                }, 300);
+              }
+            })
+          }).catch(e => {
+            wx.showToast({
+              title: '服务器繁忙，请稍后重试！',
+              icon: 'none'
+            })
           })
         }
       }

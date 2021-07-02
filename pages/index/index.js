@@ -1,6 +1,6 @@
 // index.js
 const API = require('../../config/api.js');
-const config = require('../../config/config.js');
+const Config = require('../../config/config.js');
 const {
   formatTime,
   sendRequest
@@ -9,7 +9,9 @@ const date = formatTime(new Date());
 const year = parseInt(date.match(/^\d{4}/)[0]);
 const yearMonth = date.match(/^\d{4}\-\d{2}/)[0];
 // 获取应用实例
-const app = getApp()
+const app = getApp();
+// 原始数据
+let sourceData;
 Page({
   data: {
     userInfo: {},
@@ -24,7 +26,7 @@ Page({
         type: 1,
         key: 1,
         value: 2381
-      },{
+      }, {
         type: 0,
         key: 2,
         value: 2135
@@ -54,9 +56,9 @@ Page({
   onLoad() {
     if (app.globalData.accessToken) {
       // 请求数据
-      this.fetchData();      
+      this.fetchData();
     } else {
-      app.accessTokenReadyCallback = token => {
+      app.accessTokenReadyCallback = () => {
         // 请求数据
         this.fetchData();
       }
@@ -64,17 +66,53 @@ Page({
     let items = [0, 0, 0];
     this.data.details.forEach(item => {
       let arr = item.data;
-      items[0] += this.calculate(arr, config.IN);
-      items[1] += this.calculate(arr, config.OUT);
+      items[0] += this.calculate(arr, Config.IN);
+      items[1] += this.calculate(arr, Config.OUT);
       items[2] += this.calculate(arr);
     });
-    console.log(111)
     items = items.map(num => (num / 100).toFixed(2));
     this.setData({
       incoming: items[0],
       outgoings: items[1],
       surplus: items[2]
     })
+  },
+  onShow() {
+    try {
+      let status = wx.getStorageSync(Config.RELOAD_INDEX);
+      status = parseInt(status);
+      if (status === 1) {
+        this.fetchData();
+        wx.setStorageSync(Config.RELOAD_INDEX, 0);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    try {
+      let data = wx.getStorageSync(Config.REFRESH_INDEX);
+      if (data) {
+        data = JSON.parse(data);
+        if (data.cmd === Config.BILL_DELETE) {
+          let index = sourceData.findIndex(item => item.id === data.id);
+          if (index !== -1) {
+            sourceData.splice(index, 1);
+            this.initViewData();
+          }
+        } else if (data.cmd === Config.BILL_UPDATE) {
+          let item = sourceData.find(item => item.id === data.id);
+          if (item) {
+            item.remarks = data.remarks;
+            item.bill_type = data.key;
+            item.bill_date = data.date;
+            item.amount = data.amount * 100;
+            this.initViewData();
+          }
+        }
+        wx.removeStorageSync(Config.REFRESH_INDEX);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   },
   fetchData() {
     sendRequest({
@@ -84,28 +122,38 @@ Page({
         date: this.data.date
       }
     }).then(resp => {
-      let data = this.formatData(resp.data);
-      let items = [0, 0, 0];
-      data.forEach(item => {
-        let arr = item.data;
-        items[0] += this.calculate(arr, config.IN);
-        items[1] += this.calculate(arr, config.OUT);
-        items[2] += this.calculate(arr);
-      });
-      items = items.map(num => (num / 100).toFixed(2));
-      this.setData({
-        incoming: items[0],
-        outgoings: items[1],
-        surplus: items[2],
-        details: data
+      // 保存原始数据
+      sourceData = resp.data;
+      this.initViewData();
+    }).catch(e => {
+      wx.showToast({
+        title: '服务器繁忙，请稍后重试！',
+        icon: 'none'
       })
     })
   },
-  formatData(sourceData) {
+  initViewData() {
+    let data = this.formatData();
+    let items = [0, 0, 0];
+    data.forEach(item => {
+      let arr = item.data;
+      items[0] += this.calculate(arr, Config.IN);
+      items[1] += this.calculate(arr, Config.OUT);
+      items[2] += this.calculate(arr);
+    });
+    items = items.map(num => (num / 100).toFixed(2));
+    this.setData({
+      incoming: items[0],
+      outgoings: items[1],
+      surplus: items[2],
+      details: data
+    })
+  },
+  formatData() {
     let result = [];
     let keys = [];
     sourceData.forEach(item => {
-      let key = item.createtime.match(/\d{4}\-\d{2}\-\d{2}/)[0];
+      let key = item.bill_date;
       let data = Object.create(null);
       data.id = item.id;
       data.type = item.type;
@@ -145,7 +193,7 @@ Page({
   },
   addRecord() {
     wx.navigateTo({
-      url: '../record/record',
+      url: '../record/record?type=add',
     })
   },
   showDetail(e) {
@@ -158,7 +206,7 @@ Page({
         date,
         ...target
       },
-      key: config.BILL_DETAIL,
+      key: Config.BILL_DETAIL,
       complete() {
         wx.navigateTo({
           url: '../detail/detail'
