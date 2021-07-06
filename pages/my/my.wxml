@@ -1,8 +1,10 @@
 <view class="container">
   <view class="card">
     <view class="userinfo">
-      <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 登录
-      </button>
+      <block wx:if="{{!hasUserInfo}}">
+        <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 登录 </button>
+        <button wx:else open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 登录 </button>
+      </block>
       <block wx:else>
         <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
         <text class="userinfo-nickname">{{userInfo.nickName}}</text>
@@ -10,33 +12,33 @@
     </view>
     <view class="usage-record">
       <view class="item">
-        <text class="day">62</text>
+        <text class="day">{{days}}</text>
         <text class="desc">使用天数</text>
       </view>
       <view class="item">
-        <text class="day">3</text>
+        <text class="day">{{billDays}}</text>
         <text class="desc">总记账天数</text>
       </view>
       <view class="item">
-        <text class="day">14</text>
+        <text class="day">{{billNums}}</text>
         <text class="desc">总记账笔数</text>
       </view>
     </view>
   </view>
   <view class="tabs">
-    <view class="tab" bindtap="showClassify">
+    <view class="tab hide" bindtap="showClassify">
       <view class="wrap">
         <image src="../../assets/custom_on.png" mode="aspectFit" />管理分类
       </view>
       <image src="../../assets/arrow_right_black.png" mode="aspectFit" />
     </view>
-    <view class="tab" bindtap="showApply">
+    <view class="tab hide" bindtap="showApply">
       <view class="wrap">
         <image src="../../assets/export_on.png" mode="aspectFit" />数据导出
       </view>
       <image src="../../assets/arrow_right_black.png" mode="aspectFit" />
     </view>
-    <view class="tab">
+    <view class="tab" bindtap="showAboutUs">
       <view class="wrap">
         <image src="../../assets/about_on.png" mode="aspectFit" />关于我们
       </view>

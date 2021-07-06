@@ -75,7 +75,7 @@ function accquireToken() {
 
 function sendRequest(options) {
   return new Promise((resolve, reject) => {
-    let data = options.data;
+    let data = options.data || {};
     let times = Config.RETRY_TIMES;
     let delay = Config.RETRY_DELAY;
     let url = Config.SERVER + options.url;

@@ -8,4 +8,5 @@ module.exports = {
     DELETE: '/fmis/r1t1785p',
     UPDATE: '/fmis/bmbf5zba',
     ADD: '/fmis/tbt5i1ca',
+    MY: '/fmis/ix2e3vpl'
 }

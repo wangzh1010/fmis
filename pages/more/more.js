@@ -1,19 +1,20 @@
-// pages/more/more.js
 const {
     formatTime,
-    sendRequest
+    sendRequest,
+    transformType
 } = require('../../utils/util.js');
+const Config = require('../../config/config.js');
+const API = require('../../config/api.js');
+const WxCharts = require('../../lib/wxcharts-min.js');
+const app = getApp();
 const date = formatTime(new Date());
 const year = parseInt(date.match(/^\d{4}/)[0]);
 const month = parseInt(date.match(/^\d{4}-(\d{2})/)[1]);
 const yearMonth = date.match(/^\d{4}\-\d{2}/)[0];
-const Config = require('../../config/config.js');
-const API = require('../../config/api.js');
-const Utils = require('../../utils/util.js');
-const WxCharts = require('../../lib/wxcharts-min.js');
 let incoming = null;
 let outgoings = null;
 let pieChart = null;
+let loaded = false;
 Page({
 
     /**
@@ -27,43 +28,7 @@ Page({
         currentTab: Config.OUT,
         width: 320,
         height: 320,
-        details: [{
-            type: 0,
-            key: 1,
-            value: 300000
-        }, {
-            type: 0,
-            key: 2,
-            value: 53144
-        }, {
-            type: 0,
-            key: 3,
-            value: 28781
-        }, {
-            type: 1,
-            key: 1,
-            value: 9900
-        }, {
-            type: 1,
-            key: 2,
-            value: 1987
-        }, {
-            type: 1,
-            key: 3,
-            value: 19990
-        }, {
-            type: 1,
-            key: 4,
-            value: 9922
-        }, {
-            type: 1,
-            key: 5,
-            value: 9022
-        }, {
-            type: 1,
-            key: 6,
-            value: 7922
-        }],
+        details: [],
         total: [0, 0],
         list: []
     },
@@ -72,10 +37,8 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        incoming = this.classification(this.data.details, Config.IN);
-        outgoings = this.classification(this.data.details, Config.OUT);
-        this.refreshData();
-        this.refreshPieChart();
+        loaded = true;
+        app.globalData.pageLoaded.more = true;
         this.fetchData();
     },
 
@@ -90,7 +53,16 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-
+        try {
+            let status = wx.getStorageSync(Config.RELOAD_MORE);
+            status = parseInt(status);
+            if (loaded && status === 1) {
+                this.fetchData();
+                wx.setStorageSync(Config.RELOAD_MORE, 0);
+            }
+        } catch (e) {
+            console.error(e)
+        }
     },
 
     /**
@@ -144,7 +116,7 @@ Page({
             }
         }).catch(e => {
             wx.showToast({
-                title: '网络繁忙，请稍后重试！',
+                title: '服务器繁忙，请稍后重试！',
                 icon: 'none'
             });
         });
@@ -228,7 +200,7 @@ Page({
         let data = this.data.currentTab === Config.OUT ? outgoings : incoming;
         data.forEach(item => {
             series.push({
-                name: Utils.transformType(item),
+                name: transformType(item),
                 data: item.value
             })
         })
@@ -263,6 +235,11 @@ Page({
         let type = this.data.currentTab;
         wx.navigateTo({
             url: '../statis/statis?type=' + type + '&bill_type=' + bill_type + '&date=' + this.data.date,
+        })
+    },
+    addRecord() {
+        wx.navigateTo({
+            url: '../record/record?type=' + Config.ACT_ADD + '&tab=' + this.data.currentTab,
         })
     }
 })

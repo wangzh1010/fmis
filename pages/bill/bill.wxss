@@ -85,3 +85,7 @@
     padding: 12rpx 0;
     color: #333333;
 }
+
+.no-results{
+    margin-top: 120rpx;
+  }

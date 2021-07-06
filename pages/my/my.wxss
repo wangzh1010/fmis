@@ -31,7 +31,7 @@
 
 .userinfo>.userinfo-nickname {
   font-size: 28rpx;
-  color: #333333;
+  color: #ffffff;
   line-height: 40rpx;
 }
 

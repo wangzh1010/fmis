@@ -1,11 +1,13 @@
-const API = require('../../config/api.js');
-const config = require('../../config/config.js');
 const {
     formatTime,
     sendRequest
 } = require('../../utils/util.js');
+const API = require('../../config/api.js');
+const Config = require('../../config/config.js');
+const app = getApp();
 const date = formatTime(new Date());
 const year = parseInt(date.match(/^\d{4}/)[0]);
+let loaded = false;
 Page({
 
     /**
@@ -18,73 +20,17 @@ Page({
         surplus: 0,
         incoming: 0,
         outgoing: 0,
-        results: [],
-        list: [{
-            type: 0,
-            mont: '2021-04',
-            amount: 330916
-        }, {
-            type: 1,
-            mont: '2021-04',
-            amount: 17981
-        }, {
-            type: 0,
-            mont: '2021-03',
-            amount: 403597
-        }, {
-            type: 1,
-            mont: '2021-03',
-            amount: 632716
-        }, {
-            type: 1,
-            mont: '2021-02',
-            amount: 153931
-        }, {
-            type: 0,
-            mont: '2021-02',
-            amount: 397812
-        }, {
-            type: 0,
-            mont: '2021-01',
-            amount: 378712
-        }, {
-            type: 1,
-            mont: '2021-01',
-            amount: 107893
-        }]
+        results: {},
+        noResults: false
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        let data = this.formatData(this.data.list);
-        this.setData({
-            results: data.results,
-            surplus: data.surplus,
-            incoming: data.incoming,
-            outgoing: data.outgoing
-        });
-        sendRequest({
-            url: API.BILL,
-            data: {
-                date: this.data.date
-            }
-        }).then(resp => {
-            if (resp.code === 200) {
-                let data = this.formatData(resp.data);
-                this.setData({
-                    results: data.results,
-                    surplus: data.surplus,
-                    incoming: data.incoming,
-                    outgoing: data.outgoing
-                })
-            } else {
-                wx.showToast({
-                    title: resp.message,
-                });
-            }
-        })
+        loaded = true;
+        app.globalData.pageLoaded.bill = true;
+        this.fetchData();
     },
 
     /**
@@ -98,7 +44,16 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-
+        try {
+            let status = wx.getStorageSync(Config.RELOAD_BILL);
+            status = parseInt(status);
+            if (loaded && status === 1) {
+                this.fetchData();
+                wx.setStorageSync(Config.RELOAD_BILL, 0);
+            }
+        } catch (e) {
+            console.error(e)
+        }
     },
 
     /**
@@ -135,6 +90,28 @@ Page({
     onShareAppMessage: function () {
 
     },
+    fetchData() {
+        sendRequest({
+            url: API.BILL,
+            data: {
+                date: this.data.date
+            }
+        }).then(resp => {
+            let data = this.formatData(resp.data);
+            this.setData({
+                noResults: !data.keys.length,
+                results: data.results,
+                surplus: data.surplus,
+                incoming: data.incoming,
+                outgoing: data.outgoing
+            });
+        }).catch(e => {
+            wx.showToast({
+                title: '服务器繁忙，请稍后重试！',
+                icon: 'none'
+            });
+        });
+    },
     formatData(arr) {
         let data = Object.create(null);
         data.incoming = 0;
@@ -143,7 +120,7 @@ Page({
         data.keys = [];
         data.results = {};
         arr.forEach(item => {
-            let key = item.type === config.IN ? 'incoming' : 'outgoing';
+            let key = item.type === Config.IN ? 'incoming' : 'outgoing';
             if (data.keys.includes(item.mont)) {
                 data.results[item.mont][item.type] = item.amount;
             } else {
@@ -155,5 +132,19 @@ Page({
         });
         data.surplus = data.incoming - data.outgoing;
         return data;
+    },
+    handleDateChange(e) {
+        let date = parseInt(e.detail.value);
+        if (this.data.date !== date) {
+            this.setData({
+                date: date
+            });
+            this.fetchData();
+        }
+    },
+    addRecord() {
+        wx.navigateTo({
+            url: '../record/record?type=' + Config.ACT_ADD
+        })
     }
 })

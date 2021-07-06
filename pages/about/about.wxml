@@ -1,0 +1,5 @@
+<view class="container">
+  <image src="../../assets/logo.png"/>
+  <text class="message">财务自由从<text class="text-primary">有余</text>开始</text>
+</view>
+

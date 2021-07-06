@@ -1,6 +1,7 @@
 // app.js
 const API = require('./config/api.js');
 const {
+  USER_INFO,
   ACCESS_TOKEN
 } = require('./config/config.js');
 const {
@@ -10,6 +11,14 @@ const {
 
 App({
   onLaunch() {
+    try {
+      let userInfo = wx.getStorageSync(USER_INFO);
+      if (userInfo) {
+        this.globalData.userInfo = JSON.parse(userInfo);
+      }
+    } catch (e) {
+      console.error(e);
+    }
     try {
       let token = wx.getStorageSync(ACCESS_TOKEN);
       // 如果可以从本地存储中获取token 使用获取的token登录
@@ -43,7 +52,12 @@ App({
   },
   globalData: {
     userInfo: null,
-    accessToken: null
+    accessToken: null,
+    pageLoaded: {
+      more: false,
+      bill: false,
+      my: false
+    }
   },
   wechatLogin(token) {
     sendRequest({

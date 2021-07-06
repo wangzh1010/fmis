@@ -10,7 +10,8 @@
     "pages/statis/statis",
     "pages/apply/apply",
     "pages/classify/classify",
-    "pages/addClassify/addClassify"
+    "pages/addClassify/addClassify",
+    "pages/about/about"
   ],
   "window": {
     "backgroundTextStyle": "light",

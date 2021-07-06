@@ -16,7 +16,8 @@
             </view>
         </view>
     </view>
-    <view class="table">
+    <view wx:if="{{noResults}}" class="no-results">{{date}}年，您还没有收支信息，快去<text class="text-primary" bindtap="addRecord">添加</text>吧！</view>
+    <view wx:else class="table">
         <view class="thead">
             <text>月份</text>
             <text>收入</text>

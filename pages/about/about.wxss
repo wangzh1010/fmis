@@ -1,0 +1,19 @@
+.container {
+  background-color: #fafafa;
+  width: 100vw;
+  height: 100vh;
+}
+
+.container>image {
+  width: 160rpx;
+  height: 160rpx;
+  background-color: #fff;
+  border-radius: 100%;
+  margin-top: 120rpx;
+}
+
+.container>.message {
+  margin-top: 20rpx;
+  font-size: 30rpx;
+  color: #333;
+}

@@ -3,7 +3,8 @@
   <view class="card">
     <view class="picker-wrap">
       <picker mode="date" value="{{date}}" fields="month" start="{{start}}" end="{{end}}" bindchange="handleDateChange">
-        <text>{{date}}</text></picker>
+        <text>{{date}}</text>
+      </picker>
     </view>
     <view class="wrap">
       <view class="surplus">
@@ -15,28 +16,31 @@
       </view>
     </view>
   </view>
-  <block wx:for="{{details}}" wx:key="idx" wx:for-index="idx">
-    <view class="details">
-      <view class="summary">
-        <view class="date">{{Utils.formatDate(item.date)}}</view>
-        <view class="wrap">
-          <view>收入：<text class="amount">{{Utils.calculate(item.data, 0)}}</text></view>
-          <view>支出：<text class="amount">{{Utils.calculate(item.data, 1)}}</text></view>
-          <view>结余：<text class="amount">{{Utils.calculate(item.data)}}</text></view>
-        </view>
-      </view>
-      <block wx:for="{{item.data}}" wx:key="index">
-        <view class="row" data-idx="{{idx}}" data-id="{{item.id}}" bindtap="showDetail">
-          <view class="img-wrap">
-            <image src="{{Utils.transformImageURL(item)}}" mode="aspectFit" />
-          </view>
+  <view wx:if="{{!details.length}}" class="no-results">您这个月还没有收支信息，快去<text class="text-primary" bindtap="addRecord">添加</text>吧！</view>
+  <block wx:else>
+    <block wx:for="{{details}}" wx:key="idx" wx:for-index="idx">
+      <view class="details">
+        <view class="summary">
+          <view class="date">{{Utils.formatDate(item.date)}}</view>
           <view class="wrap">
-            <text>{{Utils.transformType(item)}}</text>
-            <text>{{Utils.formatMoney(item)}}</text>
+            <view>收入：<text class="amount">{{Utils.calculate(item.data, 0)}}</text></view>
+            <view>支出：<text class="amount">{{Utils.calculate(item.data, 1)}}</text></view>
+            <view>结余：<text class="amount">{{Utils.calculate(item.data)}}</text></view>
           </view>
         </view>
-      </block>
-    </view>
+        <block wx:for="{{item.data}}" wx:key="index">
+          <view class="row" data-id="{{item.id}}" bindtap="showDetail">
+            <view class="img-wrap">
+              <image src="{{Utils.transformImageURL(item)}}" mode="aspectFit" />
+            </view>
+            <view class="wrap">
+              <text>{{Utils.transformType(item)}}</text>
+              <text>{{Utils.formatMoney(item)}}</text>
+            </view>
+          </view>
+        </block>
+      </view>
+    </block>
   </block>
   <view class="add" bindtap="addRecord">
     <image src="../../assets/add.png" mode="aspectFit" />

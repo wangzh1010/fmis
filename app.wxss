@@ -9,6 +9,28 @@
   background-color: #FFFFFF;
 }
 
+.add {
+  width: 90rpx;
+  height: 90rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1296db;
+  border-radius: 100%;
+  position: fixed;
+  right: 10rpx;
+  bottom: 100rpx;
+}
+
+.add>image {
+  width: 80%;
+  height: 80%;
+}
+
+.hide {
+  display: none !important;
+}
+
 .text-warm {
   color: #ffa726;
 }
@@ -19,6 +41,10 @@
 
 .text-danger {
   color: #e60000;
+}
+
+.text-primary {
+  color: #1296DB;
 }
 
 .justify-content-end {

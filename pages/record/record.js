@@ -1,9 +1,10 @@
-const API = require('../../config/api.js');
-const Config = require('../../config/config.js');
 const {
     formatTime,
     sendRequest
 } = require('../../utils/util.js');
+const API = require('../../config/api.js');
+const Config = require('../../config/config.js');
+const app = getApp();
 const date = formatTime(new Date());
 let year = parseInt(date.match(/^\d{4}/)[0]);
 let day = date.match(/^\d{4}\-\d{2}\-\d{2}/)[0];
@@ -36,7 +37,7 @@ Page({
         // 缓存数据
         let data = {
             id: 0,
-            type: Config.OUT
+            type: options.tab ? parseInt(options.tab) : Config.OUT
         };
         // 当前页面是新增还是修改标识
         let type = options.type;
@@ -111,6 +112,7 @@ Page({
 
     },
     handleTabChange(e) {
+        // 新增时可选择收入还是支出
         let type = e.target.dataset.type;
         if (this.data.currentTab !== type) {
             this.refreshCategories({
@@ -148,9 +150,12 @@ Page({
         });
     },
     handleDateChange(e) {
-        this.setData({
-            day: e.detail.value
-        })
+        let day = e.detail.value;
+        if (this.data.day !== day) {
+            this.setData({
+                day: day
+            });
+        }
     },
     handleMoneyChange(e) {
         this.setData({
@@ -192,8 +197,10 @@ Page({
             return;
         }
         if (this.data.type === Config.ACT_ADD) {
+            // index more bill
             this.addBill();
         } else if (this.data.type === Config.ACT_MODIFY) {
+            // detail
             this.modifyBill();
         } else {
             wx.showToast({
@@ -214,9 +221,24 @@ Page({
                 remarks: this.data.remarks
             }
         }).then(resp => {
-            console.log(resp);
             try {
+                // 刷新首页
                 wx.setStorageSync(Config.RELOAD_INDEX, 1);
+                // 如果其他TAB页已加载过则刷新
+                let {
+                    more,
+                    bill,
+                    my
+                } = app.globalData.pageLoaded;
+                if (more) {
+                    wx.setStorageSync(Config.RELOAD_MORE, 1);
+                }
+                if (bill) {
+                    wx.setStorageSync(Config.RELOAD_BILL, 1);
+                }
+                if (my) {
+                    wx.setStorageSync(Config.RELOAD_MY, 1);
+                }
             } catch (e) {
                 console.error(e);
             }
@@ -249,19 +271,31 @@ Page({
             url: API.UPDATE,
             data: data
         }).then(resp => {
-            console.log(resp);
-            // 详情页 数据刷新
+            // 详情页刷新数据
             try {
                 wx.setStorageSync(Config.REFRESH_DETAIL, JSON.stringify(data));
             } catch (e) {
                 console.error(e);
             }
-            // 首页数据刷新
+            // TAB页重新请求数据
             try {
-                wx.setStorageSync(Config.REFRESH_INDEX, JSON.stringify({
-                    ...data,
-                    cmd: Config.BILL_UPDATE
-                }));
+                // 首页
+                wx.setStorageSync(Config.RELOAD_INDEX, 1);
+                // 如果其他TAB页已加载过则在页面显示的时候重新请求
+                let {
+                    more,
+                    bill,
+                    my
+                } = app.globalData.pageLoaded;
+                if (more) {
+                    wx.setStorageSync(Config.RELOAD_MORE, 1);
+                }
+                if (bill) {
+                    wx.setStorageSync(Config.RELOAD_BILL, 1);
+                }
+                if (my) {
+                    wx.setStorageSync(Config.RELOAD_MY, 1);
+                }
             } catch (e) {
                 console.error(e);
             }

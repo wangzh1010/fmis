@@ -14,41 +14,10 @@ const app = getApp();
 let sourceData;
 Page({
   data: {
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
     date: yearMonth,
     start: `${year - 5}-01-01`,
     end: `${year + 5}-01-01`,
-    details: [{
-      date: '2021-04-18',
-      data: [{
-        type: 1,
-        key: 1,
-        value: 2381
-      }, {
-        type: 0,
-        key: 2,
-        value: 2135
-      }]
-    }, {
-      date: '2021-04-15',
-      data: [{
-          type: 0,
-          key: 1,
-          value: 300000
-        }, {
-          type: 0,
-          key: 3,
-          value: 28781
-        },
-        {
-          type: 1,
-          key: 1,
-          value: 15600
-        }
-      ]
-    }],
+    details: [],
     surplus: 0,
     incoming: 0,
     outgoings: 0
@@ -63,19 +32,6 @@ Page({
         this.fetchData();
       }
     }
-    let items = [0, 0, 0];
-    this.data.details.forEach(item => {
-      let arr = item.data;
-      items[0] += this.calculate(arr, Config.IN);
-      items[1] += this.calculate(arr, Config.OUT);
-      items[2] += this.calculate(arr);
-    });
-    items = items.map(num => (num / 100).toFixed(2));
-    this.setData({
-      incoming: items[0],
-      outgoings: items[1],
-      surplus: items[2]
-    })
   },
   onShow() {
     try {
@@ -93,11 +49,10 @@ Page({
       if (data) {
         data = JSON.parse(data);
         if (data.cmd === Config.BILL_DELETE) {
-          let index = sourceData.findIndex(item => item.id === data.id);
-          if (index !== -1) {
-            sourceData.splice(index, 1);
-            this.initViewData();
-          }
+          // 过滤出没有被删除的数据
+          let results = sourceData.filter(item => !data.ids.includes(item.id));
+          sourceData = results;
+          this.initViewData();
         } else if (data.cmd === Config.BILL_UPDATE) {
           let item = sourceData.find(item => item.id === data.id);
           if (item) {
@@ -185,31 +140,35 @@ Page({
     return totalAmount;
   },
   handleDateChange(e) {
-    let arr = e.detail.value.split('-');
-    this.setData({
-      date: `${arr[0]}-${arr[1]}`
-    });
-    this.fetchData();
+    let date = e.detail.value;
+    if (this.data.date !== date) {
+      this.setData({
+        date: date
+      });
+      this.fetchData();
+    }
   },
   addRecord() {
     wx.navigateTo({
-      url: '../record/record?type=add',
+      url: '../record/record?type=' + Config.ACT_ADD,
     })
   },
   showDetail(e) {
     let id = e.currentTarget.dataset.id;
-    let idx = e.currentTarget.dataset.idx;
-    let date = this.data.details[idx].date;
-    let target = this.data.details[idx].data.find(item => item.id === id);
+    let data = sourceData.find(item => item.id === id);
     wx.setStorage({
       data: {
-        date,
-        ...target
+        id: data.id,
+        type: data.type,
+        value: data.amount,
+        key: data.bill_type,
+        date: data.bill_date,
+        remarks: data.remarks
       },
       key: Config.BILL_DETAIL,
       complete() {
         wx.navigateTo({
-          url: '../detail/detail'
+          url: '../detail/detail?referer=index'
         })
       }
     })
